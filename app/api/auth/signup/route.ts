@@ -5,7 +5,9 @@ import User from '@/models/User';
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('Signup API called');
     const { name, email, password } = await request.json();
+    console.log('Request data:', { name, email, password: '***' });
 
     // Validate input
     if (!name || !email || !password) {
@@ -46,9 +48,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    console.log('Connecting to database...');
     await connectDB();
+    console.log('Database connected successfully');
 
     // Check if user already exists
+    console.log('Checking for existing user with email:', email);
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return NextResponse.json(
@@ -66,6 +71,7 @@ export async function POST(request: NextRequest) {
     const hashedPassword = await bcrypt.hash(password, 12);
 
     // Create user
+    console.log('Creating new user...');
     const user = new User({
       name,
       email,
@@ -74,6 +80,7 @@ export async function POST(request: NextRequest) {
     });
 
     await user.save();
+    console.log('User created successfully with ID:', user._id);
 
     return NextResponse.json(
       { message: 'Đăng ký thành công' },

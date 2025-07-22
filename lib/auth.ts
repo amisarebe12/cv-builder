@@ -7,6 +7,7 @@ import connectDB from '@/lib/mongodb'
 import User from '@/models/User'
 
 export const authOptions: NextAuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: 'credentials',

@@ -11,14 +11,24 @@ export async function POST(request: NextRequest) {
     if (!name || !email || !password) {
       return NextResponse.json(
         { error: 'Vui lòng điền đầy đủ thông tin' },
-        { status: 400 }
+        { 
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+          }
+        }
       );
     }
 
     if (password.length < 6) {
       return NextResponse.json(
         { error: 'Mật khẩu phải có ít nhất 6 ký tự' },
-        { status: 400 }
+        { 
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+          }
+        }
       );
     }
 
@@ -27,7 +37,12 @@ export async function POST(request: NextRequest) {
     if (!emailRegex.test(email)) {
       return NextResponse.json(
         { error: 'Email không hợp lệ' },
-        { status: 400 }
+        { 
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+          }
+        }
       );
     }
 
@@ -38,7 +53,12 @@ export async function POST(request: NextRequest) {
     if (existingUser) {
       return NextResponse.json(
         { error: 'Email đã được sử dụng' },
-        { status: 400 }
+        { 
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+          }
+        }
       );
     }
 
@@ -57,13 +77,23 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       { message: 'Đăng ký thành công' },
-      { status: 201 }
+      { 
+        status: 201,
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8'
+        }
+      }
     );
   } catch (error) {
     console.error('Signup error:', error);
     return NextResponse.json(
       { error: 'Có lỗi xảy ra khi đăng ký' },
-      { status: 500 }
+      { 
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8'
+        }
+      }
     );
   }
 }

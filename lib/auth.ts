@@ -73,6 +73,29 @@ export const authOptions: NextAuthOptions = {
       else if (new URL(url).origin === baseUrl) return url
       return baseUrl
     },
+    async signIn({ user, account, profile }) {
+      if (account?.provider === 'google' || account?.provider === 'facebook') {
+        try {
+          await connectDB()
+          const existingUser = await User.findOne({ email: user.email })
+          
+          if (!existingUser) {
+            await User.create({
+              name: user.name,
+              email: user.email,
+              image: user.image,
+              provider: account.provider,
+              providerId: account.providerAccountId,
+            })
+          }
+          return true
+        } catch (error) {
+          console.error('Error saving OAuth user:', error)
+          return false
+        }
+      }
+      return true
+    },
   },
   pages: {
     signIn: '/auth/signin',

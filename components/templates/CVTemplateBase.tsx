@@ -140,7 +140,7 @@ export abstract class CVTemplateBase {
   }
 
   // Export utilities
-  protected generatePrintStyles(): string {
+  public generatePrintStyles(): string {
     return `
       @media print {
         .cv-template {

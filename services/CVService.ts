@@ -513,7 +513,7 @@ export class CVService {
               ` : ''}
               
               <!-- Certifications Section -->
-              ${cvData.certifications?.length > 0 ? `
+              ${cvData.certifications && cvData.certifications.length > 0 ? `
                 <section class="mb-8">
                   <h3 class="text-xl font-semibold text-gray-800 mb-4 border-b-2 border-blue-600 pb-2">
                     Chứng chỉ

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth/next'
-import { authOptions } from '@/lib/auth'
+import { getToken } from 'next-auth/jwt'
 import connectDB from '@/lib/mongodb'
 import SavedCV from '@/models/SavedCV'
 import User from '@/models/User'
@@ -8,9 +7,9 @@ import mongoose from 'mongoose'
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const session = await getServerSession({ req: request, res: NextResponse } as any, authOptions)
+    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET })
     
-    if (!session || !session.user?.email) {
+    if (!token || !token.email) {
       return NextResponse.json(
         { error: 'Unauthorized. Please login to view CV.' },
         { status: 401 }
@@ -29,7 +28,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     }
 
     // Find user by email
-    const user = await User.findOne({ email: session.user.email })
+    const user = await User.findOne({ email: token.email })
     if (!user) {
       return NextResponse.json(
         { error: 'User not found' },
@@ -62,9 +61,9 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const session = await getServerSession({ req: request, res: NextResponse } as any, authOptions)
+    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET })
     
-    if (!session || !session.user?.email) {
+    if (!token || !token.email) {
       return NextResponse.json(
         { error: 'Unauthorized. Please login to update CV.' },
         { status: 401 }
@@ -83,7 +82,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     }
 
     // Find user by email
-    const user = await User.findOne({ email: session.user.email })
+    const user = await User.findOne({ email: token.email })
     if (!user) {
       return NextResponse.json(
         { error: 'User not found' },
@@ -132,9 +131,9 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const session = await getServerSession({ req: request, res: NextResponse } as any, authOptions)
+    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET })
     
-    if (!session || !session.user?.email) {
+    if (!token || !token.email) {
       return NextResponse.json(
         { error: 'Unauthorized. Please login to delete CV.' },
         { status: 401 }
@@ -153,7 +152,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     }
 
     // Find user by email
-    const user = await User.findOne({ email: session.user.email })
+    const user = await User.findOne({ email: token.email })
     if (!user) {
       return NextResponse.json(
         { error: 'User not found' },

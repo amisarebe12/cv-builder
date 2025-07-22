@@ -1,15 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth/next'
-import { authOptions } from '@/lib/auth'
+import { getToken } from 'next-auth/jwt'
 import connectDB from '@/lib/mongodb'
 import SavedCV from '@/models/SavedCV'
 import User from '@/models/User'
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession({ req: request, res: NextResponse } as any, authOptions)
+    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET })
     
-    if (!session || !session.user?.email) {
+    if (!token || !token.email) {
       return NextResponse.json(
         { error: 'Unauthorized. Please login to save CV.' },
         { status: 401 }
@@ -19,7 +18,7 @@ export async function POST(request: NextRequest) {
     await connectDB()
     
     // Find user by email
-    const user = await User.findOne({ email: session.user.email })
+    const user = await User.findOne({ email: token.email })
     if (!user) {
       return NextResponse.json(
         { error: 'User not found' },

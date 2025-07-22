@@ -1,11 +1,12 @@
 'use client';
 
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useState, useRef } from 'react';
 import { Modal, Button, Spin, message, Dropdown } from 'antd';
-import { DownloadOutlined, PrinterOutlined, CloseOutlined, DownOutlined } from '@ant-design/icons';
+import { DownloadOutlined, PrinterOutlined, CloseOutlined, DownOutlined, CameraOutlined } from '@ant-design/icons';
 import { CVModel } from '../models/CVModel';
 import { getTemplateComponent, getTemplateInfo } from '../utils/CVFactory';
 import { CVService } from '../services/CVService';
+import ScreenshotService from '../services/ScreenshotService';
 
 interface PreviewModalProps {
   visible: boolean;
@@ -23,14 +24,17 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
   onSelect
 }) => {
   const [loading, setLoading] = useState(false);
+  const [screenshotLoading, setScreenshotLoading] = useState(false);
+  const cvPreviewRef = useRef<HTMLDivElement>(null);
   const templateInfo = getTemplateInfo(templateId);
   const TemplateComponent = getTemplateComponent(templateId);
   const cvService = CVService.getInstance();
+  const screenshotService = ScreenshotService.getInstance();
 
   const handlePrint = async () => {
     try {
       setLoading(true);
-      await cvService.printCV(cvData.getId(), templateId);
+      await cvService.printCV(cvData.toJSON(), templateId);
       message.success('Đã gửi lệnh in CV');
     } catch (error) {
       message.error('Không thể in CV. Vui lòng thử lại.');
@@ -43,13 +47,71 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
   const handleDownload = async (format: 'pdf' | 'html' = 'pdf') => {
     try {
       setLoading(true);
-      await cvService.downloadCV(cvData.getId(), templateId, format);
+      await cvService.downloadCV(cvData.toJSON(), templateId, format);
       message.success(`Đã tải xuống CV dưới dạng ${format.toUpperCase()}`);
     } catch (error) {
       message.error('Không thể tải xuống CV. Vui lòng thử lại.');
       console.error('Download error:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Chụp ảnh màn hình CV
+  const handleScreenshotDownload = async (format: 'png' | 'pdf' = 'png') => {
+    if (!cvPreviewRef.current) {
+      message.error('Không tìm thấy nội dung CV để chụp ảnh');
+      return;
+    }
+
+    try {
+      setScreenshotLoading(true);
+      const personalInfo = cvData.getPersonalInfo();
+      const filename = `${personalInfo.fullName || 'CV'}_${templateInfo?.name || 'Template'}_${new Date().toISOString().split('T')[0]}`;
+      
+      if (format === 'png') {
+        await screenshotService.downloadAsPNG(cvPreviewRef.current, filename, {
+          scale: 2,
+          quality: 1,
+          backgroundColor: '#ffffff'
+        });
+        message.success('Đã tải xuống ảnh CV dưới dạng PNG');
+      } else {
+        await screenshotService.downloadAsPDF(cvPreviewRef.current, filename, {
+          scale: 2,
+          quality: 1,
+          backgroundColor: '#ffffff'
+        });
+        message.success('Đã tải xuống ảnh CV dưới dạng PDF');
+      }
+    } catch (error) {
+      message.error('Không thể chụp ảnh CV. Vui lòng thử lại.');
+      console.error('Screenshot error:', error);
+    } finally {
+      setScreenshotLoading(false);
+    }
+  };
+
+  // In ảnh chụp màn hình CV
+  const handleScreenshotPrint = async () => {
+    if (!cvPreviewRef.current) {
+      message.error('Không tìm thấy nội dung CV để chụp ảnh');
+      return;
+    }
+
+    try {
+      setScreenshotLoading(true);
+      await screenshotService.printScreenshot(cvPreviewRef.current, {
+        scale: 2,
+        quality: 1,
+        backgroundColor: '#ffffff'
+      });
+      message.success('Đã gửi lệnh in ảnh CV');
+    } catch (error) {
+      message.error('Không thể in ảnh CV. Vui lòng thử lại.');
+      console.error('Screenshot print error:', error);
+    } finally {
+      setScreenshotLoading(false);
     }
   };
 
@@ -114,28 +176,74 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
       footer={[
         <div key="footer" className="flex items-center justify-between w-full">
           <div className="flex items-center gap-2">
-            <Button
-              icon={<PrinterOutlined />}
-              onClick={handlePrint}
-              loading={loading}
-              className="flex items-center"
-            >
-              In CV
-            </Button>
             <Dropdown
               menu={{
                 items: [
                   {
-                    key: 'pdf',
-                    label: 'Tải xuống PDF',
-                    icon: <DownloadOutlined />,
-                    onClick: () => handleDownload('pdf')
+                    key: 'print-html',
+                    label: 'In CV (HTML)',
+                    icon: <PrinterOutlined />,
+                    onClick: handlePrint
                   },
                   {
-                    key: 'html',
-                    label: 'Tải xuống HTML',
-                    icon: <DownloadOutlined />,
-                    onClick: () => handleDownload('html')
+                    key: 'print-screenshot',
+                    label: 'In CV (Ảnh chụp)',
+                    icon: <CameraOutlined />,
+                    onClick: handleScreenshotPrint
+                  }
+                ]
+              }}
+              trigger={['click']}
+            >
+              <Button
+                icon={<PrinterOutlined />}
+                loading={loading || screenshotLoading}
+                className="flex items-center"
+              >
+                In CV <DownOutlined />
+              </Button>
+            </Dropdown>
+            <Dropdown
+              menu={{
+                items: [
+                  {
+                    type: 'group',
+                    label: 'Tải xuống HTML/PDF',
+                    children: [
+                      {
+                        key: 'pdf',
+                        label: 'Tải xuống PDF',
+                        icon: <DownloadOutlined />,
+                        onClick: () => handleDownload('pdf')
+                      },
+                      {
+                        key: 'html',
+                        label: 'Tải xuống HTML',
+                        icon: <DownloadOutlined />,
+                        onClick: () => handleDownload('html')
+                      }
+                    ]
+                  },
+                  {
+                    type: 'divider'
+                  },
+                  {
+                    type: 'group',
+                    label: 'Tải xuống ảnh chụp',
+                    children: [
+                      {
+                        key: 'screenshot-png',
+                        label: 'Tải xuống PNG (Ảnh chụp)',
+                        icon: <CameraOutlined />,
+                        onClick: () => handleScreenshotDownload('png')
+                      },
+                      {
+                        key: 'screenshot-pdf',
+                        label: 'Tải xuống PDF (Ảnh chụp)',
+                        icon: <CameraOutlined />,
+                        onClick: () => handleScreenshotDownload('pdf')
+                      }
+                    ]
                   }
                 ]
               }}
@@ -143,7 +251,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
             >
               <Button
                 icon={<DownloadOutlined />}
-                loading={loading}
+                loading={loading || screenshotLoading}
                 className="flex items-center"
               >
                 Tải xuống <DownOutlined />
@@ -171,7 +279,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
       ]}
       closeIcon={null}
     >
-      <div className="cv-preview-content bg-white">
+      <div className="cv-preview-content bg-white" ref={cvPreviewRef}>
         <Suspense 
           fallback={
             <div className="flex items-center justify-center py-20">

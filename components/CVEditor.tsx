@@ -31,6 +31,7 @@ import {
 } from '@ant-design/icons';
 import { CVData, CVModel, PersonalInfo, Experience, Education, Skill, Project } from '../models/CVModel';
 import { CVService } from '../services/CVService';
+import { sampleCVData } from '../data/cvData';
 import PreviewModal from './PreviewModal';
 import { getAllTemplates, getTemplateInfo } from '../utils/CVFactory';
 import dayjs from 'dayjs';
@@ -227,17 +228,24 @@ const CVEditor: React.FC<CVEditorProps> = ({
         summary: values.summary,
         experiences: values.experiences?.map((exp: any) => ({
           ...exp,
+          id: exp.id || `exp-${Date.now()}-${Math.random()}`,
           startDate: exp.startDate ? exp.startDate.format('YYYY-MM') : '',
-          endDate: exp.endDate ? exp.endDate.format('YYYY-MM') : 'Present'
+          endDate: exp.endDate ? exp.endDate.format('YYYY-MM') : 'Present',
+          description: Array.isArray(exp.description) ? exp.description : (exp.description ? [exp.description] : [])
         })) || [],
         education: values.education?.map((edu: any) => ({
           ...edu,
+          id: edu.id || `edu-${Date.now()}-${Math.random()}`,
           startDate: edu.startDate ? edu.startDate.format('YYYY-MM') : '',
           endDate: edu.endDate ? edu.endDate.format('YYYY-MM') : ''
         })) || [],
-        skills: values.skills || [],
+        skills: values.skills?.map((skill: any) => ({
+          ...skill,
+          id: skill.id || `skill-${Date.now()}-${Math.random()}`
+        })) || [],
         projects: values.projects?.map((proj: any) => ({
           ...proj,
+          id: proj.id || `proj-${Date.now()}-${Math.random()}`,
           startDate: proj.startDate ? proj.startDate.format('YYYY-MM') : '',
           endDate: proj.endDate ? proj.endDate.format('YYYY-MM') : ''
         })) || [],
@@ -286,32 +294,51 @@ const CVEditor: React.FC<CVEditorProps> = ({
         return;
       }
       
-      // Tạo dữ liệu CV tạm thời từ form values
+      // Sử dụng dữ liệu mẫu từ file data để fallback khi form chưa có dữ liệu
+      
+      // Tạo dữ liệu CV tạm thời từ form values với fallback data
       const previewCVData: CVData = {
         ...cvData,
         personalInfo: values.personalInfo,
         summary: values.summary || '',
-        experiences: values.experiences?.map((exp: any) => ({
-          ...exp,
-          startDate: exp.startDate ? exp.startDate.format('YYYY-MM') : '',
-          endDate: exp.endDate ? exp.endDate.format('YYYY-MM') : 'Present'
-        })) || [],
-        education: values.education?.map((edu: any) => ({
-          ...edu,
-          startDate: edu.startDate ? edu.startDate.format('YYYY-MM') : '',
-          endDate: edu.endDate ? edu.endDate.format('YYYY-MM') : ''
-        })) || [],
-        skills: values.skills || [],
-        projects: values.projects?.map((proj: any) => ({
-          ...proj,
-          startDate: proj.startDate ? proj.startDate.format('YYYY-MM') : '',
-          endDate: proj.endDate ? proj.endDate.format('YYYY-MM') : ''
-        })) || [],
-        languages: values.languages || [],
-        certifications: values.certifications?.map((cert: any) => ({
-          ...cert,
-          date: cert.date ? cert.date.format('YYYY-MM') : ''
-        })) || [],
+        experiences: (values.experiences && values.experiences.length > 0) 
+          ? values.experiences?.map((exp: any) => ({
+              ...exp,
+              id: exp.id || `exp-${Date.now()}-${Math.random()}`,
+              startDate: exp.startDate ? exp.startDate.format('YYYY-MM') : '',
+              endDate: exp.endDate ? exp.endDate.format('YYYY-MM') : 'Present',
+              description: Array.isArray(exp.description) ? exp.description : (exp.description ? [exp.description] : [])
+            }))
+          : sampleCVData.experiences,
+         education: (values.education && values.education.length > 0)
+           ? values.education?.map((edu: any) => ({
+               ...edu,
+               id: edu.id || `edu-${Date.now()}-${Math.random()}`,
+               startDate: edu.startDate ? edu.startDate.format('YYYY-MM') : '',
+               endDate: edu.endDate ? edu.endDate.format('YYYY-MM') : ''
+             }))
+           : sampleCVData.education,
+         skills: (values.skills && values.skills.length > 0)
+           ? values.skills?.map((skill: any) => ({
+               ...skill,
+               id: skill.id || `skill-${Date.now()}-${Math.random()}`
+             }))
+           : sampleCVData.skills,
+         projects: (values.projects && values.projects.length > 0)
+           ? values.projects?.map((proj: any) => ({
+               ...proj,
+               id: proj.id || `proj-${Date.now()}-${Math.random()}`,
+               startDate: proj.startDate ? proj.startDate.format('YYYY-MM') : '',
+               endDate: proj.endDate ? proj.endDate.format('YYYY-MM') : ''
+             }))
+           : sampleCVData.projects,
+         languages: (values.languages && values.languages.length > 0) ? values.languages : sampleCVData.languages,
+         certifications: (values.certifications && values.certifications.length > 0)
+           ? values.certifications?.map((cert: any) => ({
+               ...cert,
+               date: cert.date ? cert.date.format('YYYY-MM') : ''
+             }))
+           : sampleCVData.certifications,
         lastModified: new Date().toISOString()
       };
       
@@ -350,32 +377,49 @@ const CVEditor: React.FC<CVEditorProps> = ({
         // Cập nhật templateId tạm thời cho preview
         const tempTemplateId = templateId;
         
-        // Tạo dữ liệu CV tạm thời từ form values
+        // Tạo dữ liệu CV tạm thời từ form values với fallback data
         const previewCVData: CVData = {
           ...cvData,
           personalInfo: values.personalInfo,
           summary: values.summary || '',
-          experiences: values.experiences?.map((exp: any) => ({
-            ...exp,
-            startDate: exp.startDate ? exp.startDate.format('YYYY-MM') : '',
-            endDate: exp.endDate ? exp.endDate.format('YYYY-MM') : 'Present'
-          })) || [],
-          education: values.education?.map((edu: any) => ({
-            ...edu,
-            startDate: edu.startDate ? edu.startDate.format('YYYY-MM') : '',
-            endDate: edu.endDate ? edu.endDate.format('YYYY-MM') : ''
-          })) || [],
-          skills: values.skills || [],
-          projects: values.projects?.map((proj: any) => ({
-            ...proj,
-            startDate: proj.startDate ? proj.startDate.format('YYYY-MM') : '',
-            endDate: proj.endDate ? proj.endDate.format('YYYY-MM') : ''
-          })) || [],
-          languages: values.languages || [],
-          certifications: values.certifications?.map((cert: any) => ({
-            ...cert,
-            date: cert.date ? cert.date.format('YYYY-MM') : ''
-          })) || [],
+          experiences: (values.experiences && values.experiences.length > 0) 
+            ? values.experiences?.map((exp: any) => ({
+                ...exp,
+                id: exp.id || `exp-${Date.now()}-${Math.random()}`,
+                startDate: exp.startDate ? exp.startDate.format('YYYY-MM') : '',
+                endDate: exp.endDate ? exp.endDate.format('YYYY-MM') : 'Present',
+                description: Array.isArray(exp.description) ? exp.description : (exp.description ? [exp.description] : [])
+              }))
+            : sampleCVData.experiences,
+          education: (values.education && values.education.length > 0)
+            ? values.education?.map((edu: any) => ({
+                ...edu,
+                id: edu.id || `edu-${Date.now()}-${Math.random()}`,
+                startDate: edu.startDate ? edu.startDate.format('YYYY-MM') : '',
+                endDate: edu.endDate ? edu.endDate.format('YYYY-MM') : ''
+              }))
+            : sampleCVData.education,
+          skills: (values.skills && values.skills.length > 0)
+            ? values.skills?.map((skill: any) => ({
+                ...skill,
+                id: skill.id || `skill-${Date.now()}-${Math.random()}`
+              }))
+            : sampleCVData.skills,
+          projects: (values.projects && values.projects.length > 0)
+            ? values.projects?.map((proj: any) => ({
+                ...proj,
+                id: proj.id || `proj-${Date.now()}-${Math.random()}`,
+                startDate: proj.startDate ? proj.startDate.format('YYYY-MM') : '',
+                endDate: proj.endDate ? proj.endDate.format('YYYY-MM') : ''
+              }))
+            : sampleCVData.projects,
+          languages: (values.languages && values.languages.length > 0) ? values.languages : sampleCVData.languages,
+          certifications: (values.certifications && values.certifications.length > 0)
+            ? values.certifications?.map((cert: any) => ({
+                ...cert,
+                date: cert.date ? cert.date.format('YYYY-MM') : ''
+              }))
+            : sampleCVData.certifications,
           lastModified: new Date().toISOString(),
           templateId: tempTemplateId // Thêm templateId vào dữ liệu preview
         };

@@ -69,7 +69,7 @@ const Header: React.FC<HeaderProps> = ({ className = '' }) => {
       onClick: () => router.push('/my-cvs')
     },
     {
-      type: 'divider'
+      type: 'divider' as const
     },
     {
       key: 'logout',

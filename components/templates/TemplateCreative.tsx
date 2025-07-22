@@ -297,7 +297,7 @@ class CreativeTemplate extends CVTemplateBase {
   /**
    * Get skill level color for progress bars
    */
-  private getSkillLevelColor(level: string): string {
+  protected getSkillLevelColor(level: string): string {
     switch (level.toLowerCase()) {
       case 'expert':
       case 'chuyên gia':
@@ -319,7 +319,7 @@ class CreativeTemplate extends CVTemplateBase {
   /**
    * Get skill level width percentage
    */
-  private getSkillLevelWidth(level: string): string {
+  protected getSkillLevelWidth(level: string): string {
     switch (level.toLowerCase()) {
       case 'expert':
       case 'chuyên gia':

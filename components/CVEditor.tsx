@@ -200,10 +200,10 @@ const CVEditor: React.FC<CVEditorProps> = ({
         endDate: proj.endDate ? dayjs(proj.endDate) : null
       })),
       languages: data.languages,
-      certifications: data.certifications.map(cert => ({
+      certifications: data.certifications?.map(cert => ({
         ...cert,
         date: cert.date ? dayjs(cert.date) : null
-      }))
+      })) || []
     });
   };
 

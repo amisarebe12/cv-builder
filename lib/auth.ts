@@ -3,8 +3,6 @@ import GoogleProvider from 'next-auth/providers/google'
 import FacebookProvider from 'next-auth/providers/facebook'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import bcrypt from 'bcryptjs'
-import connectDB from '@/lib/mongodb'
-import User from '@/models/User'
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -21,6 +19,9 @@ export const authOptions: NextAuthOptions = {
         }
 
         try {
+          const { default: connectDB } = await import('@/lib/mongodb')
+          const { default: User } = await import('@/models/User')
+          
           await connectDB()
           const user = await User.findOne({ email: credentials.email })
 
@@ -77,6 +78,9 @@ export const authOptions: NextAuthOptions = {
     async signIn({ user, account, profile }) {
       if (account?.provider === 'google' || account?.provider === 'facebook') {
         try {
+          const { default: connectDB } = await import('@/lib/mongodb')
+          const { default: User } = await import('@/models/User')
+          
           await connectDB()
           const existingUser = await User.findOne({ email: user.email })
           

@@ -496,7 +496,7 @@ export class CVService {
               ` : ''}
               
               <!-- Languages Section -->
-              ${cvData.languages?.length > 0 ? `
+              ${cvData.languages && cvData.languages.length > 0 ? `
                 <section class="mb-8">
                   <h3 class="text-xl font-semibold text-gray-800 mb-4 border-b-2 border-blue-600 pb-2">
                     Ngôn ngữ

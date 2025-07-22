@@ -4,7 +4,7 @@ import React from 'react';
 import { Typography, Card, Space, Divider, Alert, Row, Col } from 'antd';
 import { 
   SafetyOutlined, 
-  ShieldCheckOutlined, 
+  SecurityScanOutlined, 
   LockOutlined, 
   EyeOutlined,
   UserOutlined,
@@ -29,7 +29,7 @@ const PrivacyPage: React.FC = () => {
     rights: <UserOutlined className="text-indigo-500" />,
     storage: <ClockCircleOutlined className="text-teal-500" />,
     transfer: <GlobalOutlined className="text-cyan-500" />,
-    children: <ShieldCheckOutlined className="text-pink-500" />,
+    children: <SecurityScanOutlined className="text-pink-500" />,
     changes: <FileProtectOutlined className="text-yellow-500" />,
     contact: <ContactsOutlined className="text-gray-500" />
   };
@@ -134,11 +134,7 @@ const PrivacyPage: React.FC = () => {
                 </ul>
               </div>
 
-            <Divider />
-
-
-
-            <Divider />
+              <Divider />
 
               <div className="bg-gradient-to-r from-orange-500/5 to-red-500/5 p-6 -m-6 mb-6 mt-8">
                 <Title level={2} className="flex items-center gap-3 text-gray-800 mb-0">
@@ -169,7 +165,7 @@ const PrivacyPage: React.FC = () => {
                 </div>
               </div>
 
-            <Divider />
+              <Divider />
 
               <div className="bg-gradient-to-r from-blue-500/5 to-purple-500/5 p-6 -m-6 mb-6 mt-8">
                 <Title level={2} className="flex items-center gap-3 text-gray-800 mb-0">
@@ -217,7 +213,7 @@ const PrivacyPage: React.FC = () => {
                 </div>
               </div>
 
-            <Divider />
+              <Divider />
 
               <div className="bg-gradient-to-r from-yellow-500/5 to-orange-500/5 p-6 -m-6 mb-6 mt-8">
                 <Title level={2} className="flex items-center gap-3 text-gray-800 mb-0">
@@ -229,69 +225,64 @@ const PrivacyPage: React.FC = () => {
                 <Paragraph className="text-gray-700 font-medium mb-4">
                   🍪 Chúng tôi sử dụng cookie và các công nghệ tương tự để cải thiện trải nghiệm của bạn:
                 </Paragraph>
-                <Row gutter={[16, 16]}>
-                  <Col xs={24} md={12}>
-                    <div className="bg-white p-4 rounded-lg border border-yellow-200">
-                      <div className="text-yellow-600 text-xl mb-2">⚙️</div>
-                      <div className="font-medium text-yellow-700 mb-2">Ghi nhớ tùy chọn</div>
-                      <div className="text-sm text-gray-600">Lưu cài đặt và tùy chọn của bạn</div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="bg-white p-4 rounded-lg border border-yellow-200 shadow-sm">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-yellow-600">🔧</span>
+                      <span className="font-medium text-yellow-700">Cookie cần thiết</span>
                     </div>
-                  </Col>
-                  <Col xs={24} md={12}>
-                    <div className="bg-white p-4 rounded-lg border border-orange-200">
-                      <div className="text-orange-600 text-xl mb-2">✨</div>
-                      <div className="font-medium text-orange-700 mb-2">Cải thiện trải nghiệm</div>
-                      <div className="text-sm text-gray-600">Tối ưu hóa giao diện người dùng</div>
+                    <div className="text-sm text-gray-600">Đảm bảo website hoạt động bình thường</div>
+                  </div>
+                  <div className="bg-white p-4 rounded-lg border border-orange-200 shadow-sm">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-orange-600">📊</span>
+                      <span className="font-medium text-orange-700">Cookie phân tích</span>
                     </div>
-                  </Col>
-                  <Col xs={24} md={12}>
-                    <div className="bg-white p-4 rounded-lg border border-blue-200">
-                      <div className="text-blue-600 text-xl mb-2">📈</div>
-                      <div className="font-medium text-blue-700 mb-2">Phân tích lưu lượng</div>
-                      <div className="text-sm text-gray-600">Hiểu cách bạn sử dụng website</div>
+                    <div className="text-sm text-gray-600">Hiểu cách bạn sử dụng website</div>
+                  </div>
+                  <div className="bg-white p-4 rounded-lg border border-blue-200 shadow-sm">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-blue-600">⚙️</span>
+                      <span className="font-medium text-blue-700">Cookie chức năng</span>
                     </div>
-                  </Col>
-                  <Col xs={24} md={12}>
-                    <div className="bg-white p-4 rounded-lg border border-green-200">
-                      <div className="text-green-600 text-xl mb-2">🎯</div>
-                      <div className="font-medium text-green-700 mb-2">Nội dung phù hợp</div>
-                      <div className="text-sm text-gray-600">Cung cấp nội dung phù hợp</div>
+                    <div className="text-sm text-gray-600">Ghi nhớ tùy chọn của bạn</div>
+                  </div>
+                  <div className="bg-white p-4 rounded-lg border border-green-200 shadow-sm">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-green-600">🎯</span>
+                      <span className="font-medium text-green-700">Cookie cá nhân hóa</span>
                     </div>
-                  </Col>
-                </Row>
-                <div className="mt-4 p-3 bg-amber-100 rounded border border-amber-300">
-                  <Paragraph className="mb-0 text-amber-800 text-sm">
-                    💡 <strong>Lưu ý:</strong> Bạn có thể quản lý cookie thông qua cài đặt trình duyệt của mình.
-                  </Paragraph>
+                    <div className="text-sm text-gray-600">Cung cấp nội dung phù hợp</div>
+                  </div>
                 </div>
               </div>
 
-            <Divider />
+              <Divider />
 
-              <div className="bg-gradient-to-r from-purple-500/5 to-pink-500/5 p-6 -m-6 mb-6 mt-8">
+              <div className="bg-gradient-to-r from-purple-500/5 to-indigo-500/5 p-6 -m-6 mb-6 mt-8">
                 <Title level={2} className="flex items-center gap-3 text-gray-800 mb-0">
                   {sectionIcons.rights}
                   6. Quyền của bạn
                 </Title>
               </div>
               <div className="bg-purple-50 border border-purple-200 p-6 rounded-lg">
-                <Paragraph className="text-gray-700 font-medium mb-6">
+                <Paragraph className="text-gray-700 font-medium mb-4">
                   👤 Bạn có các quyền sau đối với thông tin cá nhân của mình:
                 </Paragraph>
-                <div className="grid md:grid-cols-2 gap-4 mb-6">
+                <div className="grid md:grid-cols-2 gap-4 mb-4">
                   <div className="bg-white p-4 rounded-lg border-l-4 border-blue-400 shadow-sm">
                     <div className="flex items-center gap-2 mb-2">
-                      <EyeOutlined className="text-blue-600" />
+                      <span className="text-blue-600">👁️</span>
                       <span className="font-medium text-blue-700">Quyền truy cập</span>
                     </div>
-                    <div className="text-sm text-gray-600">Yêu cầu xem thông tin chúng tôi có về bạn</div>
+                    <div className="text-sm text-gray-600">Xem thông tin chúng tôi có về bạn</div>
                   </div>
                   <div className="bg-white p-4 rounded-lg border-l-4 border-green-400 shadow-sm">
                     <div className="flex items-center gap-2 mb-2">
-                      <SettingOutlined className="text-green-600" />
+                      <span className="text-green-600">✏️</span>
                       <span className="font-medium text-green-700">Quyền chỉnh sửa</span>
                     </div>
-                    <div className="text-sm text-gray-600">Cập nhật hoặc sửa đổi thông tin không chính xác</div>
+                    <div className="text-sm text-gray-600">Cập nhật hoặc sửa đổi thông tin</div>
                   </div>
                   <div className="bg-white p-4 rounded-lg border-l-4 border-red-400 shadow-sm">
                     <div className="flex items-center gap-2 mb-2">
@@ -300,19 +291,19 @@ const PrivacyPage: React.FC = () => {
                     </div>
                     <div className="text-sm text-gray-600">Yêu cầu xóa thông tin cá nhân</div>
                   </div>
-                  <div className="bg-white p-4 rounded-lg border-l-4 border-orange-400 shadow-sm">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="text-orange-600">⛔</span>
-                      <span className="font-medium text-orange-700">Quyền hạn chế</span>
-                    </div>
-                    <div className="text-sm text-gray-600">Hạn chế việc xử lý thông tin</div>
-                  </div>
                   <div className="bg-white p-4 rounded-lg border-l-4 border-purple-400 shadow-sm">
                     <div className="flex items-center gap-2 mb-2">
                       <span className="text-purple-600">📦</span>
                       <span className="font-medium text-purple-700">Quyền di chuyển</span>
                     </div>
-                    <div className="text-sm text-gray-600">Nhận bản sao thông tin ở định dạng có thể đọc được</div>
+                    <div className="text-sm text-gray-600">Nhận bản sao dữ liệu của bạn</div>
+                  </div>
+                  <div className="bg-white p-4 rounded-lg border-l-4 border-orange-400 shadow-sm">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-orange-600">⏸️</span>
+                      <span className="font-medium text-orange-700">Quyền hạn chế</span>
+                    </div>
+                    <div className="text-sm text-gray-600">Giới hạn cách chúng tôi xử lý dữ liệu</div>
                   </div>
                   <div className="bg-white p-4 rounded-lg border-l-4 border-pink-400 shadow-sm">
                     <div className="flex items-center gap-2 mb-2">
@@ -330,7 +321,7 @@ const PrivacyPage: React.FC = () => {
                 </div>
               </div>
 
-            <Divider />
+              <Divider />
 
               <div className="bg-gradient-to-r from-indigo-500/5 to-blue-500/5 p-6 -m-6 mb-6 mt-8">
                 <Title level={2} className="flex items-center gap-3 text-gray-800 mb-0">
@@ -371,7 +362,7 @@ const PrivacyPage: React.FC = () => {
                 </div>
               </div>
 
-            <Divider />
+              <Divider />
 
               <div className="bg-gradient-to-r from-teal-500/5 to-cyan-500/5 p-6 -m-6 mb-6 mt-8">
                 <Title level={2} className="flex items-center gap-3 text-gray-800 mb-0">
@@ -400,7 +391,7 @@ const PrivacyPage: React.FC = () => {
                 </div>
               </div>
 
-            <Divider />
+              <Divider />
 
               <div className="bg-gradient-to-r from-pink-500/5 to-purple-500/5 p-6 -m-6 mb-6 mt-8">
                 <Title level={2} className="flex items-center gap-3 text-gray-800 mb-0">
@@ -431,7 +422,7 @@ const PrivacyPage: React.FC = () => {
                 </div>
               </div>
 
-            <Divider />
+              <Divider />
 
               <div className="bg-gradient-to-r from-yellow-500/5 to-amber-500/5 p-6 -m-6 mb-6 mt-8">
                 <Title level={2} className="flex items-center gap-3 text-gray-800 mb-0">
@@ -462,7 +453,7 @@ const PrivacyPage: React.FC = () => {
                 </div>
               </div>
 
-            <Divider />
+              <Divider />
 
               <div className="bg-gradient-to-r from-gray-500/5 to-slate-500/5 p-6 -m-6 mb-6 mt-8">
                 <Title level={2} className="flex items-center gap-3 text-gray-800 mb-0">
@@ -506,7 +497,8 @@ const PrivacyPage: React.FC = () => {
                 </div>
               </div>
             </Card>
-        </div>
+          </Col>
+        </Row>
       </div>
     </div>
   );

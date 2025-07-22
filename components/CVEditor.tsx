@@ -42,13 +42,15 @@ const { TabPane } = Tabs;
 interface CVEditorProps {
   cvId?: string;
   templateId?: string;
-  onSave?: (cvData: CVModel) => void;
+  initialData?: any;
+  onSave?: (cvData: any, title: string) => void;
   onCancel?: () => void;
 }
 
 const CVEditor: React.FC<CVEditorProps> = ({
   cvId,
   templateId = 'minimal',
+  initialData,
   onSave,
   onCancel
 }) => {
@@ -62,12 +64,18 @@ const CVEditor: React.FC<CVEditorProps> = ({
   const [templates, setTemplates] = useState(getAllTemplates());
 
   useEffect(() => {
-    if (cvId) {
+    if (initialData) {
+      setCvData(initialData.cvData || initialData);
+      populateForm(initialData.cvData || initialData);
+      if (initialData.template) {
+        setSelectedTemplateId(initialData.template);
+      }
+    } else if (cvId) {
       loadCVData();
     } else {
       initializeNewCV();
     }
-  }, [cvId]);
+  }, [cvId, initialData]);
 
   const loadCVData = async () => {
     if (!cvId) return;
@@ -181,29 +189,29 @@ const CVEditor: React.FC<CVEditorProps> = ({
 
   const populateForm = (data: CVData) => {
     form.setFieldsValue({
-      personalInfo: data.personalInfo,
-      summary: data.summary,
-      experiences: data.experiences.map(exp => ({
+      personalInfo: data.personalInfo || {},
+      summary: data.summary || '',
+      experiences: (data.experiences || []).map(exp => ({
         ...exp,
         startDate: exp.startDate ? dayjs(exp.startDate) : null,
         endDate: exp.endDate && exp.endDate !== 'Present' ? dayjs(exp.endDate) : null
       })),
-      education: data.education.map(edu => ({
+      education: (data.education || []).map(edu => ({
         ...edu,
         startDate: edu.startDate ? dayjs(edu.startDate) : null,
         endDate: edu.endDate ? dayjs(edu.endDate) : null
       })),
-      skills: data.skills,
-      projects: data.projects.map(proj => ({
+      skills: data.skills || [],
+      projects: (data.projects || []).map(proj => ({
         ...proj,
         startDate: proj.startDate ? dayjs(proj.startDate) : null,
         endDate: proj.endDate ? dayjs(proj.endDate) : null
       })),
-      languages: data.languages,
-      certifications: data.certifications?.map(cert => ({
+      languages: data.languages || [],
+      certifications: (data.certifications || []).map(cert => ({
         ...cert,
         date: cert.date ? dayjs(cert.date) : null
-      })) || []
+      }))
     });
   };
 
@@ -213,8 +221,7 @@ const CVEditor: React.FC<CVEditorProps> = ({
       setLoading(true);
 
       // Chuyển đổi dữ liệu form thành CVData
-      const updatedCVData: CVData = {
-        ...cvData!,
+      const updatedCVData = {
         personalInfo: values.personalInfo,
         summary: values.summary,
         experiences: values.experiences?.map((exp: any) => ({
@@ -237,25 +244,20 @@ const CVEditor: React.FC<CVEditorProps> = ({
         certifications: values.certifications?.map((cert: any) => ({
           ...cert,
           date: cert.date ? cert.date.format('YYYY-MM') : ''
-        })) || [],
-        lastModified: new Date().toISOString(), // Thêm thời gian cập nhật
-        templateId: selectedTemplateId // Lưu mẫu CV đã chọn
+        })) || []
       };
 
-      const cvService = CVService.getInstance();
-      let savedCV: CVModel;
+      // Tạo title từ thông tin cá nhân
+      const title = values.personalInfo?.fullName 
+        ? `CV - ${values.personalInfo.fullName}` 
+        : 'CV không có tiêu đề';
 
-      if (cvId) {
-        savedCV = await cvService.updateCV(cvId, updatedCVData);
-      } else {
-        savedCV = await cvService.createCV(updatedCVData);
-      }
-
-      setCvData(savedCV.toJSON());
-      message.success('Lưu CV thành công!');
+      setCvData(updatedCVData);
       
       if (onSave) {
-        onSave(savedCV);
+        onSave(updatedCVData, title);
+      } else {
+        message.success('Lưu CV thành công!');
       }
     } catch (error) {
       console.error('Lỗi khi lưu CV:', error);

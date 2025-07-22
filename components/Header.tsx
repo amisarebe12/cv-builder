@@ -2,11 +2,16 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Layout, Menu, Button, Drawer, Typography } from 'antd';
+import { useSession, signIn, signOut } from 'next-auth/react';
+import { Layout, Menu, Button, Drawer, Typography, Avatar, Dropdown, Space } from 'antd';
 import { 
   MenuOutlined,
   HomeOutlined,
-  FileTextOutlined
+  FileTextOutlined,
+  UserOutlined,
+  LogoutOutlined,
+  FolderOutlined,
+  LoginOutlined
 } from '@ant-design/icons';
 
 const { Header: AntHeader } = Layout;
@@ -18,6 +23,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ className = '' }) => {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
 
   const menuItems = [
@@ -32,7 +38,13 @@ const Header: React.FC<HeaderProps> = ({ className = '' }) => {
       icon: <FileTextOutlined />,
       label: 'Mẫu CV',
       href: '#templates'
-    }
+    },
+    ...(session ? [{
+      key: 'my-cvs',
+      icon: <FolderOutlined />,
+      label: 'CV của tôi',
+      href: '/my-cvs'
+    }] : [])
   ];
 
   const handleMenuClick = (href: string) => {
@@ -43,9 +55,30 @@ const Header: React.FC<HeaderProps> = ({ className = '' }) => {
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
       }
+    } else {
+      router.push(href);
     }
     setMobileMenuVisible(false);
   };
+
+  const userMenuItems = [
+    {
+      key: 'my-cvs',
+      icon: <FolderOutlined />,
+      label: 'CV của tôi',
+      onClick: () => router.push('/my-cvs')
+    },
+    {
+      key: 'divider',
+      type: 'divider'
+    },
+    {
+      key: 'logout',
+      icon: <LogoutOutlined />,
+      label: 'Đăng xuất',
+      onClick: () => signOut()
+    }
+  ];
 
   return (
     <AntHeader className={`bg-white shadow-sm sticky top-0 z-50 ${className}`}>
@@ -64,37 +97,68 @@ const Header: React.FC<HeaderProps> = ({ className = '' }) => {
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             <nav className="flex items-center space-x-8">
-              <a 
-                href="/" 
-                className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleMenuClick('/');
-                }}
-              >
-                <HomeOutlined className="mr-2" />
-                Trang chủ
-              </a>
-              <a 
-                href="#templates" 
-                className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleMenuClick('#templates');
-                }}
-              >
-                <FileTextOutlined className="mr-2" />
-                Mẫu CV
-              </a>
+              {menuItems.map((item) => (
+                <a 
+                  key={item.key}
+                  href={item.href} 
+                  className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleMenuClick(item.href);
+                  }}
+                >
+                  {item.icon}
+                  <span className="ml-2">{item.label}</span>
+                </a>
+              ))}
             </nav>
             
-            <Button 
-              type="primary"
-              size="middle"
-              className="bg-blue-600 border-blue-600 hover:bg-blue-700 hover:border-blue-700"
-            >
-              Tạo CV ngay
-            </Button>
+            <div className="flex items-center space-x-4">
+              {session ? (
+                <>
+                  <Button 
+                    type="primary"
+                    size="middle"
+                    onClick={() => router.push('/editor')}
+                    className="bg-blue-600 border-blue-600 hover:bg-blue-700 hover:border-blue-700"
+                  >
+                    Tạo CV ngay
+                  </Button>
+                  <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
+                    <Space className="cursor-pointer hover:bg-gray-50 px-2 py-1 rounded-lg transition-colors">
+                      <Avatar 
+                        src={session.user?.image} 
+                        icon={<UserOutlined />}
+                        size="small"
+                      />
+                      <span className="text-gray-700 font-medium hidden sm:inline">
+                        {session.user?.name}
+                      </span>
+                    </Space>
+                  </Dropdown>
+                </>
+              ) : (
+                <>
+                  <Button 
+                    type="default"
+                    size="middle"
+                    icon={<LoginOutlined />}
+                    onClick={() => signIn()}
+                    className="border-blue-600 text-blue-600 hover:bg-blue-50"
+                  >
+                    Đăng nhập
+                  </Button>
+                  <Button 
+                    type="primary"
+                    size="middle"
+                    onClick={() => router.push('/editor')}
+                    className="bg-blue-600 border-blue-600 hover:bg-blue-700 hover:border-blue-700"
+                  >
+                    Tạo CV ngay
+                  </Button>
+                </>
+              )}
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -147,15 +211,70 @@ const Header: React.FC<HeaderProps> = ({ className = '' }) => {
           </div>
           
           {/* Mobile Action Button */}
-          <div className="border-t pt-4 mt-4">
-            <Button 
-              type="primary"
-              block
-              size="large"
-              className="bg-blue-600 border-blue-600 hover:bg-blue-700 hover:border-blue-700"
-            >
-              Tạo CV ngay
-            </Button>
+          <div className="border-t pt-4 mt-4 space-y-3">
+            {session ? (
+              <>
+                <Button 
+                  type="primary"
+                  block
+                  size="large"
+                  onClick={() => {
+                    router.push('/editor');
+                    setMobileMenuVisible(false);
+                  }}
+                  className="bg-blue-600 border-blue-600 hover:bg-blue-700 hover:border-blue-700"
+                >
+                  Tạo CV ngay
+                </Button>
+                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center space-x-3">
+                    <Avatar 
+                      src={session.user?.image} 
+                      icon={<UserOutlined />}
+                      size="small"
+                    />
+                    <span className="text-gray-700 font-medium">
+                      {session.user?.name}
+                    </span>
+                  </div>
+                  <Button 
+                    type="text"
+                    size="small"
+                    icon={<LogoutOutlined />}
+                    onClick={() => signOut()}
+                    className="text-gray-500 hover:text-red-500"
+                  />
+                </div>
+              </>
+            ) : (
+              <>
+                <Button 
+                  type="default"
+                  block
+                  size="large"
+                  icon={<LoginOutlined />}
+                  onClick={() => {
+                    signIn();
+                    setMobileMenuVisible(false);
+                  }}
+                  className="border-blue-600 text-blue-600 hover:bg-blue-50 mb-2"
+                >
+                  Đăng nhập
+                </Button>
+                <Button 
+                  type="primary"
+                  block
+                  size="large"
+                  onClick={() => {
+                    router.push('/editor');
+                    setMobileMenuVisible(false);
+                  }}
+                  className="bg-blue-600 border-blue-600 hover:bg-blue-700 hover:border-blue-700"
+                >
+                  Tạo CV ngay
+                </Button>
+              </>
+            )}
           </div>
           
           {/* Mobile Footer */}

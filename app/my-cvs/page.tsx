@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import {
   Layout,
@@ -16,7 +17,8 @@ import {
   Spin,
   Empty,
   Tag,
-  Dropdown
+  Dropdown,
+  Tooltip
 } from 'antd';
 import {
   PlusOutlined,
@@ -27,373 +29,284 @@ import {
   DownloadOutlined,
   PrinterOutlined,
   MoreOutlined,
-  ArrowLeftOutlined
+  ArrowLeftOutlined,
+  CalendarOutlined,
+  FileTextOutlined
 } from '@ant-design/icons';
-import { CVModel } from '../../models/CVModel';
-import { CVService } from '../../services/CVService';
-import PreviewModal from '../../components/PreviewModal';
-import { formatDistanceToNow } from 'date-fns';
-import { vi } from 'date-fns/locale';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
 const { Search } = Input;
 const { confirm } = Modal;
 
-interface CVCardProps {
-  cv: CVModel;
-  onEdit: (cvId: string) => void;
-  onDelete: (cvId: string) => void;
-  onPreview: (cv: CVModel) => void;
-  onDuplicate: (cvId: string) => void;
+interface SavedCV {
+  _id: string;
+  title: string;
+  template: string;
+  createdAt: string;
+  updatedAt: string;
+  isPublic: boolean;
+  cvData?: any;
 }
 
-const CVCard: React.FC<CVCardProps> = ({ cv, onEdit, onDelete, onPreview, onDuplicate }) => {
-  const cvData = cv.toJSON();
-  // Sử dụng thời gian hiện tại nếu không có lastModified trong dữ liệu
-  const lastModified = cvData.lastModified ? new Date(cvData.lastModified) : new Date();
-  
-  const menuItems = [
-    {
-      key: 'edit',
-      label: 'Chỉnh sửa',
-      icon: <EditOutlined />,
-      onClick: () => onEdit(cv.getId())
-    },
-    {
-      key: 'duplicate',
-      label: 'Nhân bản',
-      icon: <CopyOutlined />,
-      onClick: () => onDuplicate(cv.getId())
-    },
-    {
-      key: 'download',
-      label: 'Tải xuống',
-      icon: <DownloadOutlined />,
-      onClick: async () => {
-        try {
-          const cvService = CVService.getInstance();
-          await cvService.downloadCV(cv.getId(), 'minimal', 'pdf');
-          message.success('Tải xuống thành công!');
-        } catch (error) {
-          message.error('Không thể tải xuống CV');
-        }
-      }
-    },
-    {
-      key: 'print',
-      label: 'In',
-      icon: <PrinterOutlined />,
-      onClick: async () => {
-        try {
-          const cvService = CVService.getInstance();
-          await cvService.printCV(cv.getId(), 'minimal');
-        } catch (error) {
-          message.error('Không thể in CV');
-        }
-      }
-    },
-    {
-      type: 'divider' as const
-    },
-    {
-      key: 'delete',
-      label: 'Xóa',
-      icon: <DeleteOutlined />,
-      danger: true,
-      onClick: () => onDelete(cv.getId())
-    }
-  ];
-
-  return (
-    <Card
-      className="h-full hover:shadow-lg transition-shadow duration-200"
-      cover={
-        <div className="h-48 bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center relative overflow-hidden">
-          <div className="text-center">
-            <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-3 mx-auto shadow-md">
-              <span className="text-2xl font-bold text-blue-600">
-                {cvData.personalInfo.fullName?.charAt(0) || 'CV'}
-              </span>
-            </div>
-            <Text className="text-gray-600 font-medium">
-              {cvData.personalInfo.title || 'Chưa có chức danh'}
-            </Text>
-          </div>
-          <Button
-            type="text"
-            icon={<EyeOutlined />}
-            className="absolute top-2 right-2 bg-white/80 hover:bg-white"
-            onClick={() => onPreview(cv)}
-          />
-        </div>
-      }
-      actions={[
-        <Button
-          key="edit"
-          type="text"
-          icon={<EditOutlined />}
-          onClick={() => onEdit(cv.getId())}
-        >
-          Chỉnh sửa
-        </Button>,
-        <Dropdown
-          key="more"
-          menu={{ items: menuItems }}
-          trigger={['click']}
-          placement="bottomRight"
-        >
-          <Button type="text" icon={<MoreOutlined />}>
-            Thêm
-          </Button>
-        </Dropdown>
-      ]}
-    >
-      <Card.Meta
-        title={
-          <div className="flex items-center justify-between">
-            <span className="truncate">
-              {cvData.personalInfo.fullName || 'CV chưa có tên'}
-            </span>
-            <Tag color="blue">Minimal</Tag>
-          </div>
-        }
-        description={
-          <div>
-            <Text type="secondary" className="block truncate mb-1">
-              {cvData.personalInfo.email || 'Chưa có email'}
-            </Text>
-            <Text type="secondary" className="text-xs">
-              Cập nhật {formatDistanceToNow(lastModified, { addSuffix: true, locale: vi })}
-            </Text>
-          </div>
-        }
-      />
-    </Card>
-  );
-};
-
-const MyCVsPage: React.FC = () => {
+function MyCVsPage() {
+  const { data: session, status } = useSession();
   const router = useRouter();
-  const [cvs, setCvs] = useState<CVModel[]>([]);
-  const [filteredCvs, setFilteredCvs] = useState<CVModel[]>([]);
+  const [cvs, setCvs] = useState<SavedCV[]>([]);
+  const [filteredCvs, setFilteredCvs] = useState<SavedCV[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
-  const [previewCV, setPreviewCV] = useState<CVModel | null>(null);
-  const [previewVisible, setPreviewVisible] = useState(false);
 
   useEffect(() => {
-    loadCVs();
-  }, []);
+    if (status === 'unauthenticated') {
+      router.push('/auth/signin?callbackUrl=/my-cvs');
+      return;
+    }
+
+    if (status === 'authenticated') {
+      fetchMyCVs();
+    }
+  }, [status, router]);
 
   useEffect(() => {
     // Lọc CV theo từ khóa tìm kiếm
     if (searchText.trim() === '') {
       setFilteredCvs(cvs);
     } else {
-      const filtered = cvs.filter(cv => {
-        const data = cv.toJSON();
-        const searchLower = searchText.toLowerCase();
-        return (
-          data.personalInfo.fullName?.toLowerCase().includes(searchLower) ||
-          data.personalInfo.email?.toLowerCase().includes(searchLower) ||
-          data.personalInfo.title?.toLowerCase().includes(searchLower)
-        );
-      });
+      const filtered = cvs.filter(cv => 
+        cv.title.toLowerCase().includes(searchText.toLowerCase())
+      );
       setFilteredCvs(filtered);
     }
   }, [searchText, cvs]);
 
-  const loadCVs = async () => {
+  const fetchMyCVs = async () => {
     try {
       setLoading(true);
-      const cvService = CVService.getInstance();
-      const allCVs = await cvService.getAllCVs();
-      setCvs(allCVs);
-      setFilteredCvs(allCVs);
+      const response = await fetch('/api/cv/my-cvs');
+      const data = await response.json();
+
+      if (response.ok) {
+        setCvs(data.cvs);
+      } else {
+        message.error(data.error || 'Không thể tải danh sách CV');
+      }
     } catch (error) {
-      console.error('Lỗi khi tải danh sách CV:', error);
-      message.error('Không thể tải danh sách CV');
+      console.error('Error fetching CVs:', error);
+      message.error('Có lỗi xảy ra khi tải danh sách CV');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleCreateNew = () => {
-    router.push('/editor?mode=create');
-  };
-
-  const handleEdit = (cvId: string) => {
-    router.push(`/editor?mode=edit&cvId=${cvId}`);
-  };
-
-  const handleDelete = (cvId: string) => {
-    const cv = cvs.find(c => c.getId() === cvId);
-    const cvData = cv?.toJSON();
-    
+  const handleDeleteCV = (cvId: string, title: string) => {
     confirm({
       title: 'Xác nhận xóa CV',
-      content: `Bạn có chắc chắn muốn xóa CV "${cvData?.personalInfo.fullName || 'Không có tên'}"?`,
+      content: `Bạn có chắc chắn muốn xóa CV "${title}"? Hành động này không thể hoàn tác.`,
       okText: 'Xóa',
       okType: 'danger',
       cancelText: 'Hủy',
       onOk: async () => {
         try {
-          const cvService = CVService.getInstance();
-          await cvService.deleteCV(cvId);
-          message.success('Xóa CV thành công!');
-          loadCVs(); // Tải lại danh sách
+          const response = await fetch(`/api/cv/${cvId}`, {
+            method: 'DELETE'
+          });
+
+          if (response.ok) {
+            message.success('Xóa CV thành công');
+            fetchMyCVs(); // Refresh the list
+          } else {
+            const data = await response.json();
+            message.error(data.error || 'Không thể xóa CV');
+          }
         } catch (error) {
-          console.error('Lỗi khi xóa CV:', error);
-          message.error('Không thể xóa CV');
+          console.error('Error deleting CV:', error);
+          message.error('Có lỗi xảy ra khi xóa CV');
         }
       }
     });
   };
 
-  const handlePreview = (cv: CVModel) => {
-    setPreviewCV(cv);
-    setPreviewVisible(true);
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('vi-VN', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
   };
 
-  const handleDuplicate = async (cvId: string) => {
-    try {
-      const cvService = CVService.getInstance();
-      const originalCV = await cvService.getCVById(cvId);
-      
-      if (originalCV) {
-        const originalData = originalCV.toJSON();
-        const duplicatedData = {
-          ...originalData,
-          id: `cv-${Date.now()}`,
-          personalInfo: {
-            ...originalData.personalInfo,
-            fullName: `${originalData.personalInfo.fullName} (Bản sao)`
-          }
-        };
-        
-        await cvService.createCV(duplicatedData);
-        message.success('Nhân bản CV thành công!');
-        loadCVs();
-      }
-    } catch (error) {
-      console.error('Lỗi khi nhân bản CV:', error);
-      message.error('Không thể nhân bản CV');
-    }
+  const getTemplateDisplayName = (template: string) => {
+    const templateNames: { [key: string]: string } = {
+      'modern': 'Modern',
+      'classic': 'Classic',
+      'creative': 'Creative',
+      'minimal': 'Minimal',
+      'business': 'Business',
+      'tech': 'Technology',
+      'medical': 'Medical',
+      'education': 'Education',
+      'finance': 'Finance',
+      'marketing': 'Marketing',
+      'legal': 'Legal',
+      'hospitality': 'Hospitality',
+      'retail': 'Retail',
+      'construction': 'Construction',
+      'agriculture': 'Agriculture',
+      'creative2': 'Creative Pro'
+    };
+    return templateNames[template] || template;
   };
 
-  const handleGoBack = () => {
-    router.push('/');
-  };
-
-  if (loading) {
+  if (status === 'loading') {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
+      <Layout className="min-h-screen">
+        <Header />
+        <Content className="flex items-center justify-center">
           <Spin size="large" />
-          <div className="mt-4">Đang tải danh sách CV...</div>
-        </div>
-      </div>
+        </Content>
+      </Layout>
     );
   }
 
   return (
     <Layout className="min-h-screen bg-gray-50">
-      <Content className="p-6">
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
+      <Header />
+      <Content className="py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header Section */}
           <div className="mb-8">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-4">
-                <Button 
-                  icon={<ArrowLeftOutlined />}
-                  onClick={handleGoBack}
-                  className="flex items-center"
-                >
-                  Quay lại
-                </Button>
-                <Title level={2} className="!mb-0">
-                  Quản lý CV của tôi
+            <div className="flex items-center justify-between">
+              <div>
+                <Title level={2} className="mb-2">
+                  CV của tôi
                 </Title>
+                <Text className="text-gray-600">
+                  Quản lý và chỉnh sửa các CV đã lưu của bạn
+                </Text>
               </div>
-              
               <Button 
                 type="primary" 
-                icon={<PlusOutlined />}
                 size="large"
-                onClick={handleCreateNew}
-                className="bg-blue-600 border-blue-600 hover:bg-blue-700"
+                icon={<PlusOutlined />}
+                onClick={() => router.push('/editor')}
+                className="bg-blue-600 border-blue-600 hover:bg-blue-700 hover:border-blue-700"
               >
                 Tạo CV mới
               </Button>
             </div>
-            
-            <div className="flex items-center justify-between">
-              <Text type="secondary">
-                Tổng cộng {filteredCvs.length} CV
-              </Text>
-              
-              <Search
-                placeholder="Tìm kiếm CV theo tên, email hoặc chức danh..."
-                allowClear
-                style={{ width: 400 }}
-                value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
-              />
-            </div>
           </div>
 
-          {/* CV Grid */}
-          {filteredCvs.length === 0 ? (
-            <div className="text-center py-16">
-              <Empty
-                description={
-                  searchText ? 'Không tìm thấy CV nào phù hợp' : 'Chưa có CV nào'
-                }
-              >
-                {!searchText && (
-                  <Button 
-                    type="primary" 
-                    icon={<PlusOutlined />}
-                    onClick={handleCreateNew}
-                    className="bg-blue-600 border-blue-600 hover:bg-blue-700"
-                  >
-                    Tạo CV đầu tiên
-                  </Button>
-                )}
-              </Empty>
+          {/* Search */}
+          <div className="mb-6">
+            <Search
+              placeholder="Tìm kiếm CV theo tên..."
+              allowClear
+              size="large"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              style={{ maxWidth: 400 }}
+            />
+          </div>
+
+          {/* CVs Grid */}
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <Spin size="large" />
             </div>
+          ) : filteredCvs.length === 0 ? (
+            <Card className="text-center py-12">
+              <Empty
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+                description={
+                  <div>
+                    <Text className="text-gray-500 text-lg mb-4 block">
+                      {searchText ? 'Không tìm thấy CV nào' : 'Bạn chưa có CV nào được lưu'}
+                    </Text>
+                    {!searchText && (
+                      <Button 
+                        type="primary" 
+                        size="large"
+                        icon={<PlusOutlined />}
+                        onClick={() => router.push('/editor')}
+                        className="bg-blue-600 border-blue-600 hover:bg-blue-700 hover:border-blue-700"
+                      >
+                        Tạo CV đầu tiên
+                      </Button>
+                    )}
+                  </div>
+                }
+              />
+            </Card>
           ) : (
             <Row gutter={[24, 24]}>
-              {filteredCvs.map(cv => (
-                <Col key={cv.getId()} xs={24} sm={12} lg={8} xl={6}>
-                  <CVCard
-                    cv={cv}
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
-                    onPreview={handlePreview}
-                    onDuplicate={handleDuplicate}
-                  />
+              {filteredCvs.map((cv) => (
+                <Col key={cv._id} xs={24} sm={12} lg={8} xl={6}>
+                  <Card
+                    hoverable
+                    className="h-full shadow-sm border-0"
+                    cover={
+                      <div className="h-48 bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+                        <FileTextOutlined className="text-4xl text-blue-500" />
+                      </div>
+                    }
+                    actions={[
+                      <Tooltip title="Xem CV" key="view">
+                        <Button 
+                          type="text" 
+                          icon={<EyeOutlined />}
+                          onClick={() => router.push(`/editor?cvId=${cv._id}`)}
+                        />
+                      </Tooltip>,
+                      <Tooltip title="Chỉnh sửa" key="edit">
+                        <Button 
+                          type="text" 
+                          icon={<EditOutlined />}
+                          onClick={() => router.push(`/editor?cvId=${cv._id}`)}
+                        />
+                      </Tooltip>,
+                      <Tooltip title="Xóa" key="delete">
+                        <Button 
+                          type="text" 
+                          icon={<DeleteOutlined />}
+                          danger
+                          onClick={() => handleDeleteCV(cv._id, cv.title)}
+                        />
+                      </Tooltip>
+                    ]}
+                  >
+                    <Card.Meta
+                      title={
+                        <div className="truncate">
+                          {cv.title}
+                        </div>
+                      }
+                      description={
+                        <Space direction="vertical" size="small" className="w-full">
+                          <Tag color="blue">
+                            {getTemplateDisplayName(cv.template)}
+                          </Tag>
+                          <div className="flex items-center text-gray-500 text-xs">
+                            <CalendarOutlined className="mr-1" />
+                            {formatDate(cv.updatedAt)}
+                          </div>
+                          {cv.isPublic && (
+                            <Tag color="green" size="small">
+                              Công khai
+                            </Tag>
+                          )}
+                        </Space>
+                      }
+                    />
+                  </Card>
                 </Col>
               ))}
             </Row>
           )}
         </div>
       </Content>
-
-      {/* Preview Modal */}
-      {previewCV && (
-        <PreviewModal
-          visible={previewVisible}
-          onClose={() => {
-            setPreviewVisible(false);
-            setPreviewCV(null);
-          }}
-          templateId={previewCV.toJSON().templateId || 'minimal'}
-          cvData={previewCV}
-          key={`preview-${previewCV.getId()}-${Date.now()}`}
-        />
-      )}
+      <Footer />
     </Layout>
   );
 };

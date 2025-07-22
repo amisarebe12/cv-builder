@@ -281,7 +281,7 @@ class CreativeTemplate extends CVTemplateBase {
                       )}
                       <div className="text-xs text-gray-500 flex items-center">
                         <Calendar className="w-3 h-3 mr-1" />
-                        {this.formatDateRange(project.startDate, project.endDate)}
+                        {this.formatDateRange(project.startDate, project.endDate || 'Present')}
                       </div>
                     </div>
                   ))}

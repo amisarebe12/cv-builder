@@ -198,6 +198,37 @@ mycv/
 ### CSS
 - Tailwind-first approach
 - Responsive design
+
+## 📄 Pages và Navigation
+
+### Static Pages
+- **Privacy Page** (`/privacy`): Trang chính sách bảo mật
+  - Hiển thị đầy đủ thông tin về thu thập và sử dụng dữ liệu
+  - Có header navigation để quay về trang chủ
+  - Layout responsive với Ant Design components
+  
+- **Terms Page** (`/terms`): Trang điều khoản sử dụng
+  - Hiển thị các điều khoản và điều kiện sử dụng dịch vụ
+  - Có header navigation để quay về trang chủ
+  - Layout nhất quán với privacy page
+
+### Navigation Improvements
+- **Header Navigation**: Đã thêm vào tất cả các trang static
+  - Component Header được import và sử dụng
+  - Cho phép người dùng dễ dàng quay về trang chủ
+  - Menu responsive với mobile drawer
+  - Logo CV Builder và navigation links
+
+### Layout Structure
+- Tất cả static pages sử dụng cấu trúc:
+  ```jsx
+  <div className="min-h-screen bg-gray-50">
+    <Header />
+    <div className="py-8">
+      {/* Page content */}
+    </div>
+  </div>
+  ```
 - Print-friendly styles
 - Accessibility considerations
 

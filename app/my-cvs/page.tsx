@@ -292,7 +292,7 @@ function MyCVsPage() {
                             {formatDate(cv.updatedAt)}
                           </div>
                           {cv.isPublic && (
-                            <Tag color="green" size="small">
+                            <Tag color="green">
                               Công khai
                             </Tag>
                           )}

@@ -108,7 +108,7 @@ export abstract class CVTemplateBase {
   }
 
   // Validation methods
-  protected validateCVData(cvData: CVModel): boolean {
+  public validateCVData(cvData: CVModel): boolean {
     return cvData.isValid();
   }
 

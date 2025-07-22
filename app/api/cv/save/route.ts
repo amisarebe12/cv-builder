@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getToken } from 'next-auth/jwt'
-import connectDB from '@/lib/mongodb'
-import SavedCV from '@/models/SavedCV'
-import User from '@/models/User'
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,9 +12,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    const { default: connectDB } = await import('@/lib/mongodb')
     await connectDB()
     
     // Find user by email
+    const { default: User } = await import('@/models/User')
     const user = await User.findOne({ email: token.email })
     if (!user) {
       return NextResponse.json(
@@ -37,6 +36,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create new saved CV
+    const { default: SavedCV } = await import('@/models/SavedCV')
     const savedCV = new SavedCV({
       userId: user._id,
       title: title || 'Untitled CV',

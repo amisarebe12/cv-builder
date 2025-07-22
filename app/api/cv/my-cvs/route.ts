@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getToken } from 'next-auth/jwt'
-import connectDB from '@/lib/mongodb'
-import SavedCV from '@/models/SavedCV'
-import User from '@/models/User'
 
 export async function GET(request: NextRequest) {
   try {
@@ -15,9 +12,11 @@ export async function GET(request: NextRequest) {
       )
     }
 
+    const { default: connectDB } = await import('@/lib/mongodb')
     await connectDB()
     
     // Find user by email
+    const { default: User } = await import('@/models/User')
     const user = await User.findOne({ email: token.email })
     if (!user) {
       return NextResponse.json(
@@ -27,6 +26,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get all CVs for this user
+    const { default: SavedCV } = await import('@/models/SavedCV')
     const savedCVs = await SavedCV.find({ userId: user._id })
       .select('title template createdAt updatedAt isPublic')
       .sort({ updatedAt: -1 })

@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getToken } from 'next-auth/jwt'
-import connectDB from '@/lib/mongodb'
-import SavedCV from '@/models/SavedCV'
-import User from '@/models/User'
 import mongoose from 'mongoose'
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
@@ -16,6 +13,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       )
     }
 
+    const { default: connectDB } = await import('@/lib/mongodb')
     await connectDB()
     
     const { id } = params
@@ -28,6 +26,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     }
 
     // Find user by email
+    const { default: User } = await import('@/models/User')
     const user = await User.findOne({ email: token.email })
     if (!user) {
       return NextResponse.json(
@@ -37,6 +36,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     }
 
     // Get CV by ID and ensure it belongs to the user
+    const { default: SavedCV } = await import('@/models/SavedCV')
     const savedCV = await SavedCV.findOne({ _id: id, userId: user._id })
     
     if (!savedCV) {
@@ -70,6 +70,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       )
     }
 
+    const { default: connectDB } = await import('@/lib/mongodb')
     await connectDB()
     
     const { id } = params
@@ -82,6 +83,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     }
 
     // Find user by email
+    const { default: User } = await import('@/models/User')
     const user = await User.findOne({ email: token.email })
     if (!user) {
       return NextResponse.json(
@@ -94,6 +96,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     const { title, template, cvData, isPublic } = body
 
     // Update CV
+    const { default: SavedCV } = await import('@/models/SavedCV')
     const updatedCV = await SavedCV.findOneAndUpdate(
       { _id: id, userId: user._id },
       {
@@ -140,6 +143,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
       )
     }
 
+    const { default: connectDB } = await import('@/lib/mongodb')
     await connectDB()
     
     const { id } = params
@@ -152,6 +156,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     }
 
     // Find user by email
+    const { default: User } = await import('@/models/User')
     const user = await User.findOne({ email: token.email })
     if (!user) {
       return NextResponse.json(
@@ -161,6 +166,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     }
 
     // Delete CV
+    const { default: SavedCV } = await import('@/models/SavedCV')
     const deletedCV = await SavedCV.findOneAndDelete({ _id: id, userId: user._id })
 
     if (!deletedCV) {

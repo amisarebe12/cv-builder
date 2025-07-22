@@ -20,16 +20,21 @@ Sau khi import project lên Vercel, bạn cần cấu hình các environment var
    https://your-app-name.vercel.app
    ```
 
-4. **NEXT_PUBLIC_BASE_URL** - Base URL cho client
+4. **NEXTAUTH_URL_INTERNAL** - Internal URL cho Vercel (giống NEXTAUTH_URL)
+   ```
+   https://your-app-name.vercel.app
+   ```
+
+5. **NEXT_PUBLIC_BASE_URL** - Base URL cho client
    ```
    https://your-app-name.vercel.app
    ```
 
 ### Tùy chọn (cho OAuth):
-5. **GOOGLE_CLIENT_ID** - Google OAuth Client ID
-6. **GOOGLE_CLIENT_SECRET** - Google OAuth Client Secret
-7. **FACEBOOK_CLIENT_ID** - Facebook OAuth Client ID
-8. **FACEBOOK_CLIENT_SECRET** - Facebook OAuth Client Secret
+6. **GOOGLE_CLIENT_ID** - Google OAuth Client ID
+7. **GOOGLE_CLIENT_SECRET** - Google OAuth Client Secret
+8. **FACEBOOK_CLIENT_ID** - Facebook OAuth Client ID
+9. **FACEBOOK_CLIENT_SECRET** - Facebook OAuth Client Secret
 
 ## Các bước deploy:
 

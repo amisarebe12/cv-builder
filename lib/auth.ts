@@ -4,29 +4,8 @@ import FacebookProvider from 'next-auth/providers/facebook'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import bcrypt from 'bcryptjs'
 
-// Debug environment variables
-console.log('[NextAuth Config] Environment check:', {
-  NEXTAUTH_SECRET: !!process.env.NEXTAUTH_SECRET,
-  NEXTAUTH_URL: process.env.NEXTAUTH_URL,
-  NEXTAUTH_URL_INTERNAL: process.env.NEXTAUTH_URL_INTERNAL,
-  MONGODB_URI: !!process.env.MONGODB_URI,
-  NODE_ENV: process.env.NODE_ENV
-})
-
 export const authOptions: NextAuthOptions = {
-  debug: process.env.NODE_ENV === 'development',
   secret: process.env.NEXTAUTH_SECRET,
-  logger: {
-    error(code, metadata) {
-      console.error('[NextAuth Error]', code, metadata)
-    },
-    warn(code) {
-      console.warn('[NextAuth Warning]', code)
-    },
-    debug(code, metadata) {
-      console.log('[NextAuth Debug]', code, metadata)
-    }
-  },
   providers: [
     CredentialsProvider({
       name: 'credentials',

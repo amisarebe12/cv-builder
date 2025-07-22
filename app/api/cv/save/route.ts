@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getToken } from 'next-auth/jwt'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
 
 export async function POST(request: NextRequest) {
   try {
-    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET })
+    const session = await getServerSession(authOptions)
     
-    if (!token || !token.email) {
+    if (!session || !session.user?.email) {
       return NextResponse.json(
         { error: 'Unauthorized. Please login to save CV.' },
         { status: 401 }
@@ -17,7 +18,7 @@ export async function POST(request: NextRequest) {
     
     // Find user by email
     const { default: User } = await import('@/models/User')
-    const user = await User.findOne({ email: token.email })
+    const user = await User.findOne({ email: session.user.email })
     if (!user) {
       return NextResponse.json(
         { error: 'User not found' },

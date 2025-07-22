@@ -94,7 +94,7 @@ const CVCard: React.FC<CVCardProps> = ({ cv, onEdit, onDelete, onPreview, onDupl
       }
     },
     {
-      type: 'divider'
+      type: 'divider' as const
     },
     {
       key: 'delete',

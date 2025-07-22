@@ -69,7 +69,6 @@ const Header: React.FC<HeaderProps> = ({ className = '' }) => {
       onClick: () => router.push('/my-cvs')
     },
     {
-      key: 'divider',
       type: 'divider'
     },
     {

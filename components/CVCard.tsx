@@ -182,19 +182,7 @@ const CVCard: React.FC<CVCardProps> = ({
             </span>
           </div>
 
-          {/* Template Badges */}
-          <div className="absolute top-2 right-2 flex space-x-1.5">
-            {template.featured && (
-              <div className="bg-yellow-500 text-white text-xs px-2 py-0.5 rounded-full font-medium">
-                Hot
-              </div>
-            )}
-            {template.new && (
-              <div className="bg-green-500 text-white text-xs px-2 py-0.5 rounded-full font-medium">
-                New
-              </div>
-            )}
-          </div>
+          {/* Template Badges - Removed featured and new properties as they don't exist in TemplateInfo */}
 
           {/* Selection Indicator */}
           {isSelected && (

@@ -8,7 +8,7 @@ import mongoose from 'mongoose'
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await getServerSession({ req: request, res: NextResponse } as any, authOptions)
     
     if (!session || !session.user?.email) {
       return NextResponse.json(
@@ -62,7 +62,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await getServerSession({ req: request, res: NextResponse } as any, authOptions)
     
     if (!session || !session.user?.email) {
       return NextResponse.json(
@@ -132,7 +132,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await getServerSession({ req: request, res: NextResponse } as any, authOptions)
     
     if (!session || !session.user?.email) {
       return NextResponse.json(

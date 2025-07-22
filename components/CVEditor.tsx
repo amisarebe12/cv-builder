@@ -221,7 +221,8 @@ const CVEditor: React.FC<CVEditorProps> = ({
       setLoading(true);
 
       // Chuyển đổi dữ liệu form thành CVData
-      const updatedCVData = {
+      const updatedCVData: CVData = {
+        id: cvData?.id || `cv-${Date.now()}`,
         personalInfo: values.personalInfo,
         summary: values.summary,
         experiences: values.experiences?.map((exp: any) => ({
@@ -244,7 +245,9 @@ const CVEditor: React.FC<CVEditorProps> = ({
         certifications: values.certifications?.map((cert: any) => ({
           ...cert,
           date: cert.date ? cert.date.format('YYYY-MM') : ''
-        })) || []
+        })) || [],
+        lastModified: new Date().toISOString(),
+        templateId: selectedTemplateId
       };
 
       // Tạo title từ thông tin cá nhân

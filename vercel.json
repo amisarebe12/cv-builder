@@ -19,7 +19,8 @@
         }
       ],
       "destination": "https://www.cleanspark.site/$1",
-      "permanent": true
+      "permanent": true,
+      "_comment": "Update both 'value' and 'destination' when changing domain"
     }
   ]
 }

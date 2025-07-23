@@ -31,8 +31,11 @@ import {
 } from '@ant-design/icons';
 import { CVData, CVModel, PersonalInfo, Experience, Education, Skill, Project } from '../models/CVModel';
 import { CVService } from '../services/CVService';
+import { ImageUploadService } from '../services/ImageUploadService';
+import { ImageCleanupService } from '../services/ImageCleanupService';
 import { sampleCVData } from '../data/cvData';
 import PreviewModal from './PreviewModal';
+import ImageStorageInfo from './ImageStorageInfo';
 import { getAllTemplates, getTemplateInfo } from '../utils/CVFactory';
 import dayjs from 'dayjs';
 
@@ -63,6 +66,9 @@ const CVEditor: React.FC<CVEditorProps> = ({
   const [selectedTemplateId, setSelectedTemplateId] = useState(templateId);
   const [templateSelectorVisible, setTemplateSelectorVisible] = useState(false);
   const [templates, setTemplates] = useState(getAllTemplates());
+  const [avatarUploading, setAvatarUploading] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState<string>('');
+  const [currentImageId, setCurrentImageId] = useState<string>('');
 
   useEffect(() => {
     if (initialData) {
@@ -77,6 +83,12 @@ const CVEditor: React.FC<CVEditorProps> = ({
       initializeNewCV();
     }
   }, [cvId, initialData]);
+
+  // Initialize image cleanup service
+  useEffect(() => {
+    const cleanupService = ImageCleanupService.getInstance();
+    cleanupService.initAutoCleanup();
+  }, []);
 
   const loadCVData = async () => {
     if (!cvId) return;
@@ -189,6 +201,11 @@ const CVEditor: React.FC<CVEditorProps> = ({
   };
 
   const populateForm = (data: CVData) => {
+    // Set avatar URL state
+    if (data.personalInfo?.avatar) {
+      setAvatarUrl(data.personalInfo.avatar);
+    }
+    
     form.setFieldsValue({
       personalInfo: data.personalInfo || {},
       summary: data.summary || '',
@@ -364,6 +381,52 @@ const CVEditor: React.FC<CVEditorProps> = ({
     setTemplateSelectorVisible(false);
     message.success(`Đã chọn mẫu ${getTemplateInfo(templateId)?.name}`);
   };
+
+  const handleAvatarUpload = async (file: File) => {
+    try {
+      setAvatarUploading(true);
+      const imageService = ImageUploadService.getInstance();
+      const cleanupService = ImageCleanupService.getInstance();
+      
+      // Remove old image from tracking if exists
+      if (currentImageId) {
+        cleanupService.untrackImage(currentImageId);
+      }
+      
+      const result = await imageService.uploadAvatar(file, {
+        maxSize: 5, // 5MB
+        quality: 0.8
+      });
+      
+      if (result.success && result.url && result.imageId) {
+        setAvatarUrl(result.url);
+        setCurrentImageId(result.imageId);
+        form.setFieldValue(['personalInfo', 'avatar'], result.url);
+        message.success('Tải ảnh đại diện thành công!');
+      } else {
+        message.error(result.error || 'Không thể tải ảnh lên');
+      }
+    } catch (error) {
+      console.error('Avatar upload error:', error);
+      message.error('Có lỗi xảy ra khi tải ảnh lên');
+    } finally {
+      setAvatarUploading(false);
+    }
+  };
+
+  const handleRemoveAvatar = () => {
+    const cleanupService = ImageCleanupService.getInstance();
+    
+    // Remove from tracking
+    if (currentImageId) {
+      cleanupService.untrackImage(currentImageId);
+      setCurrentImageId('');
+    }
+    
+    setAvatarUrl('');
+    form.setFieldValue(['personalInfo', 'avatar'], '');
+    message.success('Đã xóa ảnh đại diện');
+  };
   
   const handlePreviewTemplate = (templateId: string) => {
     if (!cvData) {
@@ -446,30 +509,46 @@ const CVEditor: React.FC<CVEditorProps> = ({
             name={['personalInfo', 'avatar']}
             label="Ảnh đại diện"
           >
-            <div className="flex items-center gap-4">
-              <Avatar 
-                size={80} 
-                src={form.getFieldValue(['personalInfo', 'avatar'])} 
-                icon={<UserOutlined />}
-              />
-              <Upload
-                showUploadList={false}
-                beforeUpload={() => false}
-                onChange={(info) => {
-                  // Xử lý upload ảnh (demo)
-                  const file = info.file;
-                  if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                      form.setFieldValue(['personalInfo', 'avatar'], e.target?.result);
-                    };
-                    reader.readAsDataURL(file as any);
-                  }
-                }}
-              >
-                <Button icon={<UploadOutlined />}>Tải ảnh lên</Button>
-              </Upload>
-            </div>
+            <div className="flex flex-col items-center space-y-4">
+                <Avatar 
+                  size={80} 
+                  src={avatarUrl || form.getFieldValue(['personalInfo', 'avatar'])} 
+                  icon={<UserOutlined />}
+                  className="border-2 border-gray-200"
+                />
+                <div className="flex gap-2">
+                  <Upload
+                    showUploadList={false}
+                    beforeUpload={(file) => {
+                      handleAvatarUpload(file);
+                      return false; // Prevent default upload
+                    }}
+                    accept="image/*"
+                    disabled={avatarUploading}
+                  >
+                    <Button 
+                      icon={<UploadOutlined />} 
+                      loading={avatarUploading}
+                      type="primary"
+                    >
+                      {avatarUploading ? 'Đang tải...' : 'Tải ảnh lên'}
+                    </Button>
+                  </Upload>
+                  {(avatarUrl || form.getFieldValue(['personalInfo', 'avatar'])) && (
+                    <Button 
+                      icon={<DeleteOutlined />} 
+                      onClick={handleRemoveAvatar}
+                      disabled={avatarUploading}
+                      danger
+                    >
+                      Xóa
+                    </Button>
+                  )}
+                </div>
+                <div className="text-xs text-gray-500 text-center">
+                  Hỗ trợ JPG, PNG, WEBP. Tối đa 5MB.
+                </div>
+              </div>
           </Form.Item>
         </Col>
         
@@ -566,6 +645,10 @@ const CVEditor: React.FC<CVEditorProps> = ({
           placeholder="Mô tả ngắn gọn về bản thân, kinh nghiệm và mục tiêu nghề nghiệp..."
         />
       </Form.Item>
+      
+      <Divider />
+      
+      <ImageStorageInfo />
     </Card>
   );
 

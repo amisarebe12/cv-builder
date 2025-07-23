@@ -240,13 +240,23 @@ export default function SignInPage() {
           })}
         </Space>
 
-        <div className="text-center mt-6">
-          <Text className="text-gray-600">
-            Chưa có tài khoản?{' '}
-            <Link href="/auth/signup" className="text-blue-600 hover:text-blue-700">
-              Đăng ký ngay
-            </Link>
-          </Text>
+        <div className="text-center mt-6 space-y-2">
+          <div>
+            <Text className="text-gray-600">
+              Chưa có tài khoản?{' '}
+              <Link href="/auth/signup" className="text-blue-600 hover:text-blue-700">
+                Đăng ký ngay
+              </Link>
+            </Text>
+          </div>
+          <div>
+            <Text className="text-gray-600">
+              Cần xác thực email?{' '}
+              <Link href="/auth/resend-verification" className="text-blue-600 hover:text-blue-700">
+                Gửi lại mã xác thực
+              </Link>
+            </Text>
+          </div>
         </div>
 
         <Divider className="my-4" />

@@ -353,13 +353,23 @@ export default function SignUpPage() {
               </Button>
             </Space>
 
-            <div className="text-center mt-6">
-              <Text className="text-gray-600">
-                Đã có tài khoản?{' '}
-                <Link href="/auth/signin" className="text-blue-600 hover:text-blue-700">
-                  Đăng nhập ngay
-                </Link>
-              </Text>
+            <div className="text-center mt-6 space-y-2">
+              <div>
+                <Text className="text-gray-600">
+                  Đã có tài khoản?{' '}
+                  <Link href="/auth/signin" className="text-blue-600 hover:text-blue-700">
+                    Đăng nhập ngay
+                  </Link>
+                </Text>
+              </div>
+              <div>
+                <Text className="text-gray-600">
+                  Cần xác thực email?{' '}
+                  <Link href="/auth/resend-verification" className="text-blue-600 hover:text-blue-700">
+                    Gửi lại mã xác thực
+                  </Link>
+                </Text>
+              </div>
             </div>
           </Card>
         </div>

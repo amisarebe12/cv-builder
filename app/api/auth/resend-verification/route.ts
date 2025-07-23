@@ -49,26 +49,33 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Generate new verification code and token
+    const { generateVerificationCode, generateVerificationToken, getVerificationEmailTemplate, sendEmail } = await import('@/lib/email')
+    
+    const verificationCode = generateVerificationCode()
+    const verificationToken = generateVerificationToken(user._id.toString(), email)
+    const verificationExpires = new Date(Date.now() + 5 * 60 * 1000) // 5 minutes
+    
+    // Update user with new verification data
+    await User.findByIdAndUpdate(user._id, {
+      verificationCode,
+      verificationToken,
+      verificationExpires
+    })
+    
+    // Create magic link
+    const baseUrl = process.env.NEXTAUTH_URL || 'https://www.cleanspark.site'
+    const magicLink = `${baseUrl}/auth/verify-email?token=${verificationToken}&email=${encodeURIComponent(email)}`
+    
     // Send verification email
     try {
-      const verificationResponse = await fetch(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/auth/send-verification`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          userId: user._id.toString(),
-          name: user.name
-        })
+      const emailTemplate = getVerificationEmailTemplate(verificationCode, magicLink, user.name)
+      await sendEmail(email, emailTemplate.subject, emailTemplate.html, emailTemplate.text)
+      
+      return NextResponse.json({
+        message: 'Email xác thực đã được gửi lại',
+        success: true
       })
-
-      if (!verificationResponse.ok) {
-        throw new Error('Failed to send verification email')
-      }
-
-      const result = await verificationResponse.json()
-      return NextResponse.json(result)
     } catch (emailError) {
       console.error('Resend verification error:', emailError)
       return NextResponse.json(

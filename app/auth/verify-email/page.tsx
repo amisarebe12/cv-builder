@@ -223,10 +223,17 @@ export default function VerifyEmailPage() {
             showIcon
           />
           
-          <div className="text-center">
-            <Button type="link" onClick={() => router.push('/auth/signin')}>
-              Quay lại đăng nhập
-            </Button>
+          <div className="text-center space-y-2">
+            <div>
+              <Button type="link" onClick={() => router.push('/auth/resend-verification')}>
+                Không nhận được email? Gửi lại mã xác thực
+              </Button>
+            </div>
+            <div>
+              <Button type="link" onClick={() => router.push('/auth/signin')}>
+                Quay lại đăng nhập
+              </Button>
+            </div>
           </div>
         </Space>
       </Card>

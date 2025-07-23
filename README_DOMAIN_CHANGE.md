@@ -37,6 +37,9 @@ Trong file `vercel.json`, cập nhật phần redirects:
 }
 ```
 
+**Lưu ý:** Không thể thêm comment trực tiếp vào file `vercel.json` vì Vercel không hỗ trợ thuộc tính `_comment` trong schema.
+```
+
 ## 3. Cập nhật DNS và Domain Settings
 
 - Cập nhật DNS records để trỏ domain mới về Vercel

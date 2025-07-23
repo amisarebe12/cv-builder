@@ -90,10 +90,32 @@ export const authOptions: NextAuthOptions = {
       return session
     },
     async redirect({ url, baseUrl }) {
+      // Handle both www and non-www domains for mobile compatibility
+      const allowedDomains = [
+        'https://cleanspark.site',
+        'https://www.cleanspark.site'
+      ]
+      
       // Allows relative callback URLs
       if (url.startsWith("/")) return `${baseUrl}${url}`
+      
+      // Check if URL is from allowed domains
+      try {
+        const urlObj = new URL(url)
+        if (allowedDomains.some(domain => url.startsWith(domain))) {
+          return url
+        }
+      } catch (error) {
+        console.error('Invalid URL in redirect:', url)
+      }
+      
       // Allows callback URLs on the same origin
-      else if (new URL(url).origin === baseUrl) return url
+      try {
+        if (new URL(url).origin === baseUrl) return url
+      } catch (error) {
+        console.error('Invalid URL comparison:', url, baseUrl)
+      }
+      
       return baseUrl
     },
     async signIn({ user, account, profile }) {

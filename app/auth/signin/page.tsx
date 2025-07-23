@@ -2,8 +2,8 @@
 
 import React from 'react'
 import { signIn, getProviders, useSession } from 'next-auth/react'
-import { Card, Button, Typography, Space, Divider, Form, Input, message } from 'antd'
-import { GoogleOutlined, FacebookOutlined, UserOutlined, MailOutlined, LockOutlined } from '@ant-design/icons'
+import { Card, Button, Typography, Space, Divider, Form, Input, message, Alert } from 'antd'
+import { GoogleOutlined, FacebookOutlined, UserOutlined, MailOutlined, LockOutlined, WarningOutlined, ClockCircleOutlined } from '@ant-design/icons'
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
@@ -69,7 +69,49 @@ export default function SignInPage() {
       console.log('Sign in result:', result)
 
       if (result?.error) {
-        message.error('Email hoặc mật khẩu không đúng')
+        // Handle specific error types
+        if (result.error.includes('Account locked')) {
+          const lockTimeMatch = result.error.match(/until (.+)$/)
+          const lockTime = lockTimeMatch ? lockTimeMatch[1] : 'một thời gian'
+          message.error({
+            content: (
+              <div>
+                <WarningOutlined className="text-red-500 mr-2" />
+                <strong>Tài khoản bị khóa</strong>
+                <br />
+                <span className="text-sm">Tài khoản của bạn đã bị khóa do đăng nhập sai quá nhiều lần.</span>
+                <br />
+                <span className="text-sm">Thời gian mở khóa: {lockTime}</span>
+              </div>
+            ),
+            duration: 8,
+          })
+        } else if (result.error.includes('Email not verified')) {
+          message.error({
+            content: (
+              <div>
+                <MailOutlined className="text-orange-500 mr-2" />
+                <strong>Email chưa được xác thực</strong>
+                <br />
+                <span className="text-sm">Vui lòng kiểm tra email và xác thực tài khoản trước khi đăng nhập.</span>
+                <br />
+                <Button 
+                  type="link" 
+                  size="small" 
+                  className="p-0 h-auto text-blue-600"
+                  onClick={() => router.push(`/auth/verify-email?email=${encodeURIComponent(values.email)}`)}
+                >
+                  Đi đến trang xác thực →
+                </Button>
+              </div>
+            ),
+            duration: 10,
+          })
+        } else if (result.error.includes('Invalid credentials')) {
+          message.error('Email hoặc mật khẩu không đúng')
+        } else {
+          message.error(result.error || 'Có lỗi xảy ra khi đăng nhập')
+        }
       } else if (result?.ok) {
         message.success('Đăng nhập thành công!')
         // Use router.push for better navigation

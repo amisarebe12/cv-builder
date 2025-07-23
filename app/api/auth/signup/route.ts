@@ -20,18 +20,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (password.length < 6) {
-      return NextResponse.json(
-        { error: 'Mật khẩu phải có ít nhất 6 ký tự' },
-        { 
-          status: 400,
-          headers: {
-            'Content-Type': 'application/json; charset=utf-8'
-          }
-        }
-      );
-    }
-
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
@@ -67,23 +55,74 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Create temporary user instance for password validation
+    const tempUser = new User();
+    const passwordValidation = tempUser.validatePasswordStrength(password);
+    
+    if (!passwordValidation.isValid) {
+      return NextResponse.json(
+        { 
+          error: 'Mật khẩu không đủ mạnh',
+          details: passwordValidation.errors,
+          strength: passwordValidation.strength
+        },
+        { 
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+          }
+        }
+      );
+    }
+
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    // Create user
+    // Create user (not verified initially)
     console.log('Creating new user...');
     const user = new User({
       name,
       email,
       password: hashedPassword,
-      provider: 'credentials'
+      provider: 'credentials',
+      emailVerified: false,
+      passwordHistory: [{
+        password: hashedPassword,
+        createdAt: new Date()
+      }]
     });
 
     await user.save();
     console.log('User created successfully with ID:', user._id);
 
+    // Send verification email
+    try {
+      const verificationResponse = await fetch(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/auth/send-verification`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          userId: user._id.toString(),
+          name
+        })
+      });
+
+      if (!verificationResponse.ok) {
+        console.error('Failed to send verification email');
+      }
+    } catch (emailError) {
+      console.error('Email sending error:', emailError);
+    }
+
     return NextResponse.json(
-      { message: 'Đăng ký thành công' },
+      { 
+        message: 'Đăng ký thành công! Vui lòng kiểm tra email để xác thực tài khoản.',
+        userId: user._id.toString(),
+        emailSent: true,
+        passwordStrength: passwordValidation.strength
+      },
       { 
         status: 201,
         headers: {

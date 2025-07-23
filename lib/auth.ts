@@ -15,7 +15,7 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          return null
+          throw new Error('Email và mật khẩu là bắt buộc')
         }
 
         try {
@@ -26,23 +26,40 @@ export const authOptions: NextAuthOptions = {
           const user = await User.findOne({ email: credentials.email })
 
           if (!user || !user.password) {
-            return null
+            throw new Error('Email hoặc mật khẩu không chính xác')
+          }
+
+          // Check if account is locked
+          if (user.isLocked) {
+            const lockTime = Math.ceil((user.lockUntil - Date.now()) / (1000 * 60))
+            throw new Error(`Tài khoản đã bị khóa. Thử lại sau ${lockTime} phút.`)
+          }
+
+          // Check if email is verified (only for credentials provider)
+          if (user.provider === 'credentials' && !user.emailVerified) {
+            throw new Error('Vui lòng xác thực email trước khi đăng nhập')
           }
 
           const isPasswordValid = await bcrypt.compare(credentials.password, user.password)
 
           if (!isPasswordValid) {
-            return null
+            // Increment login attempts
+            await user.incLoginAttempts()
+            throw new Error('Email hoặc mật khẩu không chính xác')
           }
+
+          // Reset login attempts on successful login
+          await user.resetLoginAttempts()
 
           return {
             id: user._id.toString(),
             email: user.email,
             name: user.name,
+            emailVerified: user.emailVerified
           }
         } catch (error) {
           console.error('Auth error:', error)
-          return null
+          throw error
         }
       }
     }),

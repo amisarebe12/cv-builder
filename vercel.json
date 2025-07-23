@@ -8,5 +8,18 @@
     "env": {
       "NEXT_TELEMETRY_DISABLED": "1"
     }
-  }
+  },
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "cleanspark.site"
+        }
+      ],
+      "destination": "https://www.cleanspark.site/$1",
+      "permanent": true
+    }
+  ]
 }

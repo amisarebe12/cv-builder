@@ -93,17 +93,17 @@ const MobileTemplateSelector: React.FC<MobileTemplateSelectorProps> = ({
             </div>
             
             {/* Template Info */}
-            <div className="p-3">
-              <div className="flex items-center justify-between mb-2">
-                <Title level={5} className="mb-0 text-sm font-medium">
+            <div className="p-2">
+              <div className="flex items-center justify-between mb-1">
+                <Title level={5} className="mb-0 text-xs font-medium truncate">
                   {template.name}
                 </Title>
-                <Tag color={template.category === 'Business' ? 'blue' : 'green'} className="text-xs">
+                <Tag color={template.category === 'Business' ? 'blue' : 'green'} className="text-xs ml-1">
                   {template.category}
                 </Tag>
               </div>
               
-              <Text className="text-xs text-gray-500 block mb-3">
+              <Text className="text-xs text-gray-500 block mb-2 line-clamp-2">
                 {template.description}
               </Text>
               

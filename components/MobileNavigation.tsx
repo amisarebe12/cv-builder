@@ -1,15 +1,20 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { useSession, signIn, signOut } from 'next-auth/react';
+import { Modal, Button, Avatar, Space, Typography } from 'antd';
 import {
   HomeOutlined,
   FileTextOutlined,
   FolderOutlined,
   UserOutlined,
-  PlusOutlined
+  PlusOutlined,
+  LogoutOutlined,
+  LoginOutlined
 } from '@ant-design/icons';
+
+const { Text } = Typography;
 
 interface MobileNavigationProps {
   className?: string;
@@ -19,6 +24,7 @@ const MobileNavigation: React.FC<MobileNavigationProps> = ({ className = '' }) =
   const router = useRouter();
   const pathname = usePathname();
   const { data: session } = useSession();
+  const [userModalVisible, setUserModalVisible] = useState(false);
 
   const navItems = [
     {
@@ -54,8 +60,8 @@ const MobileNavigation: React.FC<MobileNavigationProps> = ({ className = '' }) =
       key: 'profile',
       icon: <UserOutlined className="text-lg" />,
       label: session ? 'Tài khoản' : 'Đăng nhập',
-      href: session ? '/profile' : '/auth/signin',
-      active: pathname === '/profile' || pathname === '/auth/signin'
+      href: '#profile',
+      active: false
     }
   ];
 
@@ -75,34 +81,94 @@ const MobileNavigation: React.FC<MobileNavigationProps> = ({ className = '' }) =
           }
         }, 100);
       }
+    } else if (href === '#profile') {
+      if (session) {
+        setUserModalVisible(true);
+      } else {
+        signIn();
+      }
     } else {
       router.push(href);
     }
   };
 
   return (
-    <div className={`mobile-nav ${className}`}>
-      <div className="flex justify-around items-center h-full">
-        {navItems.map((item) => (
-          <button
-            key={item.key}
-            onClick={() => handleNavClick(item.href)}
-            className={`mobile-nav-item ${
-              item.active ? 'active' : 'text-gray-500'
-            } ${
-              item.primary ? 'text-blue-600' : ''
-            }`}
-          >
-            <div className={`mb-1 ${
-              item.primary ? 'p-2 bg-blue-100 rounded-full' : ''
-            }`}>
-              {item.icon}
-            </div>
-            <span className="font-medium">{item.label}</span>
-          </button>
-        ))}
+    <>
+      <div className={`mobile-nav ${className}`}>
+        <div className="flex justify-around items-center h-full">
+          {navItems.map((item) => (
+            <button
+              key={item.key}
+              onClick={() => handleNavClick(item.href)}
+              className={`mobile-nav-item ${
+                item.active ? 'active' : 'text-gray-500'
+              } ${
+                item.primary ? 'text-blue-600' : ''
+              }`}
+            >
+              <div className={`mb-1 ${
+                item.primary ? 'p-2 bg-blue-100 rounded-full' : ''
+              }`}>
+                {item.icon}
+              </div>
+              <span className="font-medium">{item.label}</span>
+            </button>
+          ))}
+        </div>
       </div>
-    </div>
+
+      {/* User Account Modal */}
+      <Modal
+        title="Tài khoản của tôi"
+        open={userModalVisible}
+        onCancel={() => setUserModalVisible(false)}
+        footer={null}
+        centered
+      >
+        {session && (
+          <div className="text-center py-4">
+            <Avatar 
+              src={session.user?.image} 
+              icon={<UserOutlined />}
+              size={64}
+              className="mb-4"
+            />
+            <Text strong className="block text-lg mb-2">
+              {session.user?.name || 'Người dùng'}
+            </Text>
+            <Text className="block text-gray-500 mb-6">
+              {session.user?.email}
+            </Text>
+            
+            <Space direction="vertical" className="w-full" size="middle">
+              <Button 
+                type="default" 
+                icon={<FolderOutlined />}
+                block
+                onClick={() => {
+                  setUserModalVisible(false);
+                  router.push('/my-cvs');
+                }}
+              >
+                CV của tôi
+              </Button>
+              
+              <Button 
+                type="default" 
+                icon={<LogoutOutlined />}
+                block
+                onClick={() => {
+                  setUserModalVisible(false);
+                  signOut();
+                }}
+              >
+                Đăng xuất
+              </Button>
+            </Space>
+          </div>
+        )}
+      </Modal>
+    </>
   );
 };
 

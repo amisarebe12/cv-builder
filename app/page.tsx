@@ -206,10 +206,9 @@ const HomePage: React.FC = () => {
           {isMobile ? (
             <MobileTemplateSelector
               templates={templates}
-              selectedTemplateId={selectedTemplate}
+              selectedTemplate={selectedTemplate}
               onPreview={handlePreview}
               onSelect={handleSelect}
-              onStartEditing={handleStartEditing}
             />
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

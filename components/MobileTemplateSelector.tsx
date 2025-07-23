@@ -36,7 +36,7 @@ const MobileTemplateSelector: React.FC<MobileTemplateSelectorProps> = ({
     setPreviewModalVisible(false);
   };
 
-  const categories = [...new Set(templates.map(t => t.category))];
+  const categories = Array.from(new Set(templates.map(t => t.category)));
 
   return (
     <div className={`mobile-template-selector ${className}`}>

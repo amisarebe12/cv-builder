@@ -52,7 +52,7 @@ const EditorPage: React.FC = () => {
     }
   }, [mode, cvId, session, router]);
 
-  const handleSave = async (cvData: any, title: string) => {
+  const handleSave = async (cvData: any, title?: string) => {
     // Kiểm tra authentication cho việc lưu CV
     if (!session) {
       Modal.confirm({

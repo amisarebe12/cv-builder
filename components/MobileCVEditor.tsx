@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Form, Input, Button, Card, Space, DatePicker, Select, Upload, Avatar, message } from 'antd';
 import {
   UserOutlined,
-  BriefcaseOutlined,
+  BankOutlined,
   BookOutlined,
   ToolOutlined,
   ProjectOutlined,
@@ -22,7 +22,7 @@ interface MobileCVEditorProps {
   cvId?: string;
   templateId?: string;
   initialData?: any;
-  onSave: (data: any) => Promise<void>;
+  onSave: (cvData: any, title?: string) => Promise<void>;
   onCancel: () => void;
 }
 
@@ -55,7 +55,7 @@ const MobileCVEditor: React.FC<MobileCVEditorProps> = ({
     {
       key: 'experience',
       label: 'Kinh nghiệm',
-      icon: <BriefcaseOutlined />,
+      icon: <BankOutlined />,
       color: 'bg-green-500'
     },
     {
@@ -83,7 +83,8 @@ const MobileCVEditor: React.FC<MobileCVEditorProps> = ({
       setLoading(true);
       const values = await form.validateFields();
       const updatedData = { ...formData, ...values };
-      await onSave(updatedData);
+      const title = updatedData.personalInfo?.fullName || 'CV không có tiêu đề';
+      await onSave(updatedData, title);
       message.success('Lưu CV thành công!');
     } catch (error) {
       message.error('Vui lòng kiểm tra lại thông tin');

@@ -297,7 +297,6 @@ export default function SignUpPage() {
                 <div className="mb-4">
                   <PasswordStrengthIndicator
                     password={password}
-                    validation={passwordValidation}
                   />
                 </div>
               )}

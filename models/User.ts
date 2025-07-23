@@ -109,7 +109,7 @@ UserSchema.methods.resetLoginAttempts = function() {
 }
 
 // Password strength validation
-UserSchema.methods.validatePasswordStrength = function(password) {
+UserSchema.methods.validatePasswordStrength = function(password: string) {
   const minLength = 8
   const hasUpperCase = /[A-Z]/.test(password)
   const hasLowerCase = /[a-z]/.test(password)
@@ -142,7 +142,7 @@ UserSchema.methods.validatePasswordStrength = function(password) {
 }
 
 // Calculate password strength score
-UserSchema.methods.calculatePasswordStrength = function(password) {
+UserSchema.methods.calculatePasswordStrength = function(password: string) {
   let score = 0
   
   // Length bonus

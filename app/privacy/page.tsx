@@ -57,7 +57,7 @@ const PrivacyPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         {/* Alert Section */}
         <Alert
           message="🔒 Cam kết bảo mật tuyệt đối"
@@ -67,8 +67,7 @@ const PrivacyPage: React.FC = () => {
           className="mb-8 border-l-4 border-blue-500 shadow-md"
         />
 
-        <Row gutter={[24, 24]}>
-          <Col xs={24} lg={16}>
+        <div className="w-full">
             <Card className="shadow-xl border-0 overflow-hidden">
               <div className="bg-gradient-to-r from-blue-500/5 to-green-500/5 p-6 -m-6 mb-6">
                 <Title level={2} className="flex items-center gap-3 text-gray-800 mb-0">
@@ -497,8 +496,7 @@ const PrivacyPage: React.FC = () => {
                 </div>
               </div>
             </Card>
-          </Col>
-        </Row>
+        </div>
       </div>
     </div>
   );

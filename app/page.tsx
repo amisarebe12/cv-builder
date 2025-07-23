@@ -138,12 +138,12 @@ const HomePage: React.FC = () => {
               Với CV Builder, bạn có thể tạo ra những bản CV ấn tượng chỉ trong vài phút. 
               Chọn từ nhiều mẫu thiết kế đẹp mắt và tùy chỉnh theo phong cách riêng của bạn.
             </Paragraph>
-            <Space size="large" className="mb-12">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
               <Button 
                 type="primary" 
                 size="large" 
                 icon={<RocketOutlined />}
-                className="h-12 px-8 text-lg font-medium"
+                className="h-12 px-8 text-lg font-medium w-full sm:w-auto"
                 onClick={() => router.push('/editor?mode=create')}
               >
                 Bắt đầu tạo CV
@@ -151,12 +151,12 @@ const HomePage: React.FC = () => {
               <Button 
                 size="large" 
                 icon={<EyeOutlined />}
-                className="h-12 px-8 text-lg"
+                className="h-12 px-8 text-lg w-full sm:w-auto"
                 onClick={() => router.push('/my-cvs')}
               >
                 Quản lý CV
               </Button>
-            </Space>
+            </div>
             
             {/* Không hiển thị phần thống kê */}
           </div>

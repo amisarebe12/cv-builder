@@ -78,13 +78,13 @@ const UserSchema = new mongoose.Schema({
 
 // Virtual for checking if account is locked
 UserSchema.virtual('isLocked').get(function() {
-  return !!(this.lockUntil && this.lockUntil > Date.now())
+  return !!(this.lockUntil && this.lockUntil.getTime() > Date.now())
 })
 
 // Methods for handling failed login attempts
 UserSchema.methods.incLoginAttempts = function() {
   // If we have a previous lock that has expired, restart at 1
-  if (this.lockUntil && this.lockUntil < Date.now()) {
+  if (this.lockUntil && this.lockUntil.getTime() < Date.now()) {
     return this.updateOne({
       $unset: { lockUntil: 1 },
       $set: { loginAttempts: 1 }

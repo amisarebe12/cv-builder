@@ -249,6 +249,10 @@ p {
     @apply aspect-[3/4] bg-gray-50 relative;
   }
   
+  .mobile-template-preview img {
+    @apply w-full h-full object-cover object-top;
+  }
+  
   /* Responsive adjustments for mobile template cards */
   .mobile-template-card .ant-card-body {
     padding: 8px !important;
@@ -301,6 +305,26 @@ p {
     font-size: 1.25rem;
   }
   
+  /* Mobile Template Grid for Tablet */
+  .mobile-template-grid {
+    @apply grid grid-cols-3 gap-4;
+    padding: 12px;
+  }
+  
+  .mobile-template-card {
+    @apply relative bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden;
+    height: 140px;
+  }
+  
+  .mobile-template-preview {
+    @apply aspect-[3/4] bg-gray-50 relative;
+    height: 100px;
+  }
+  
+  .mobile-template-preview img {
+    @apply w-full h-full object-cover object-top;
+  }
+  
   /* Tablet Template Grid */
   .tablet-template-grid {
     @apply grid grid-cols-2 gap-4;
@@ -312,14 +336,83 @@ p {
   }
 }
 
-/* Tablet (769px - 992px) */
-@media (min-width: 769px) and (max-width: 992px) {
+/* Tablet (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Mobile Template Grid for Larger Tablet */
+  .mobile-template-grid {
+    @apply grid grid-cols-4 gap-4;
+    padding: 16px;
+  }
+  
+  .mobile-template-card {
+    @apply relative bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden;
+    height: 160px;
+  }
+  
+  .mobile-template-preview {
+    @apply aspect-[3/4] bg-gray-50 relative;
+    height: 120px;
+  }
+  
+  .mobile-template-preview img {
+    @apply w-full h-full object-cover object-top;
+  }
+  
   .tablet-template-grid {
     @apply grid grid-cols-2 gap-6;
   }
   
   .tablet-editor {
     @apply grid grid-cols-1 lg:grid-cols-2 gap-8;
+  }
+}
+
+/* Large Tablets and Small Desktops (1025px - 1200px) */
+@media (min-width: 1025px) and (max-width: 1200px) {
+  .mobile-template-grid {
+    @apply grid grid-cols-5 gap-4;
+    padding: 20px;
+  }
+  
+  .mobile-template-card {
+    @apply relative bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden;
+    height: 180px;
+  }
+  
+  .mobile-template-preview {
+    @apply aspect-[3/4] bg-gray-50 relative;
+    height: 140px;
+  }
+  
+  .mobile-template-preview img {
+    @apply w-full h-full object-cover object-top;
+  }
+}
+
+/* Mobile Landscape Optimizations */
+@media (max-height: 500px) and (orientation: landscape) {
+  .mobile-template-grid {
+    @apply grid grid-cols-4 gap-2;
+    padding: 8px;
+  }
+  
+  .mobile-template-card {
+    @apply relative bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden;
+    height: 120px;
+  }
+  
+  .mobile-template-preview {
+    @apply aspect-[3/4] bg-gray-50 relative;
+    height: 80px;
+  }
+  
+  .mobile-template-preview img {
+    @apply w-full h-full object-cover object-top;
+  }
+  
+  .mobile-template-card .ant-typography {
+    font-size: 11px !important;
+    line-height: 1.2 !important;
   }
 }
 

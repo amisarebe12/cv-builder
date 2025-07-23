@@ -69,10 +69,27 @@ const MobileTemplateSelector: React.FC<MobileTemplateSelectorProps> = ({
           >
             {/* Template Preview */}
             <div className="mobile-template-preview relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="w-16 h-20 bg-white rounded shadow-sm mx-auto mb-2"></div>
-                  <Text className="text-xs text-gray-500">{template.name}</Text>
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden rounded-t-lg">
+                {template.preview ? (
+                  <img 
+                    src={template.preview} 
+                    alt={`Preview ${template.name}`}
+                    className="w-full h-full object-cover object-top"
+                    onError={(e) => {
+                      // Fallback to placeholder if image fails to load
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      const fallback = target.parentElement?.querySelector('.fallback-placeholder') as HTMLElement;
+                      if (fallback) fallback.style.display = 'flex';
+                    }}
+                  />
+                ) : null}
+                <div className={`fallback-placeholder absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 flex-col items-center justify-center ${template.preview ? 'hidden' : 'flex'}`}>
+                  <div className="w-12 h-16 bg-white rounded shadow-sm mx-auto mb-2 flex items-center justify-center">
+                    <div className="w-8 h-10 bg-gray-300 rounded"></div>
+                  </div>
+                  <Text className="text-xs text-gray-500 font-medium">{template.name}</Text>
+                  <Text className="text-xs text-gray-400 mt-1">{template.category}</Text>
                 </div>
               </div>
               
@@ -140,10 +157,25 @@ const MobileTemplateSelector: React.FC<MobileTemplateSelectorProps> = ({
           </Button>
         ]}
       >
-        <div className="text-center py-8">
-          <div className="w-full max-w-sm mx-auto bg-white border rounded-lg shadow-sm">
+        <div className="text-center py-4">
+          <div className="w-full max-w-md mx-auto bg-white border rounded-lg shadow-sm overflow-hidden">
             <div className="aspect-[3/4] bg-gray-50 flex items-center justify-center">
-              <Text className="text-gray-400">Xem trước {previewTemplate?.name}</Text>
+              {previewTemplate?.preview ? (
+                <img 
+                  src={previewTemplate.preview} 
+                  alt={`Preview ${previewTemplate.name}`}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                    const fallback = target.nextElementSibling as HTMLElement;
+                    if (fallback) fallback.style.display = 'flex';
+                  }}
+                />
+              ) : null}
+              <div className="hidden absolute inset-0 bg-gray-50 flex items-center justify-center">
+                <Text className="text-gray-400">Xem trước {previewTemplate?.name}</Text>
+              </div>
             </div>
           </div>
         </div>

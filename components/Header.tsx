@@ -29,8 +29,9 @@ const Header: React.FC<HeaderProps> = ({ className = '' }) => {
   const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
   const { isMobile, isTablet } = useDeviceType();
   
-  // Don't render header on mobile, use MobileNavigation instead
-  if (isMobile) {
+  // Don't render header on mobile portrait, use MobileNavigation instead
+  // But show header on tablet and mobile landscape
+  if (isMobile && window.innerHeight > window.innerWidth) {
     return <MobileNavigation />;
   }
 
@@ -101,9 +102,9 @@ const Header: React.FC<HeaderProps> = ({ className = '' }) => {
             </Title>
           </div>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8">
-            <nav className="flex items-center space-x-8">
+          {/* Desktop/Tablet Menu */}
+          <div className="hidden sm:flex items-center space-x-4 lg:space-x-8">
+            <nav className="flex items-center space-x-4 lg:space-x-8">
               {menuItems.map((item) => (
                 <a 
                   key={item.key}
@@ -115,21 +116,22 @@ const Header: React.FC<HeaderProps> = ({ className = '' }) => {
                   }}
                 >
                   {item.icon}
-                  <span className="ml-2">{item.label}</span>
+                  <span className="ml-1 lg:ml-2 hidden md:inline">{item.label}</span>
                 </a>
               ))}
             </nav>
             
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 lg:space-x-4">
               {session ? (
                 <>
                   <Button 
                     type="primary"
-                    size="middle"
+                    size={isTablet ? "small" : "middle"}
                     onClick={() => router.push('/editor')}
                     className="bg-blue-600 border-blue-600 hover:bg-blue-700 hover:border-blue-700"
                   >
-                    Tạo CV ngay
+                    <span className="hidden md:inline">Tạo CV ngay</span>
+                    <span className="md:hidden">Tạo CV</span>
                   </Button>
                   <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
                     <Space className="cursor-pointer hover:bg-gray-50 px-2 py-1 rounded-lg transition-colors">
@@ -138,7 +140,7 @@ const Header: React.FC<HeaderProps> = ({ className = '' }) => {
                         icon={<UserOutlined />}
                         size="small"
                       />
-                      <span className="text-gray-700 font-medium hidden sm:inline">
+                      <span className="text-gray-700 font-medium hidden lg:inline">
                         {session.user?.name}
                       </span>
                     </Space>
@@ -148,20 +150,21 @@ const Header: React.FC<HeaderProps> = ({ className = '' }) => {
                 <>
                   <Button 
                     type="default"
-                    size="middle"
+                    size={isTablet ? "small" : "middle"}
                     icon={<LoginOutlined />}
                     onClick={() => signIn()}
                     className="border-blue-600 text-blue-600 hover:bg-blue-50"
                   >
-                    Đăng nhập
+                    <span className="hidden md:inline">Đăng nhập</span>
                   </Button>
                   <Button 
                     type="primary"
-                    size="middle"
+                    size={isTablet ? "small" : "middle"}
                     onClick={() => router.push('/editor')}
                     className="bg-blue-600 border-blue-600 hover:bg-blue-700 hover:border-blue-700"
                   >
-                    Tạo CV ngay
+                    <span className="hidden md:inline">Tạo CV ngay</span>
+                    <span className="md:hidden">Tạo CV</span>
                   </Button>
                 </>
               )}
@@ -169,7 +172,7 @@ const Header: React.FC<HeaderProps> = ({ className = '' }) => {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden">
+          <div className="sm:hidden">
             <Button 
               type="text"
               icon={<MenuOutlined />}

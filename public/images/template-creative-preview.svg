@@ -1,0 +1,77 @@
+<svg width="300" height="400" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="300" height="400" fill="#ffffff"/>
+  
+  <!-- Creative Background Pattern -->
+  <defs>
+    <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="10" cy="10" r="1" fill="#f1f5f9" opacity="0.5"/>
+    </pattern>
+    <linearGradient id="creativeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ff6b6b;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#4ecdc4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#45b7d1;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="300" height="400" fill="url(#dots)"/>
+  
+  <!-- Creative Header -->
+  <rect x="0" y="0" width="300" height="100" fill="url(#creativeGradient)"/>
+  
+  <!-- Geometric Shapes -->
+  <polygon points="250,20 270,40 250,60 230,40" fill="#ffffff" opacity="0.3"/>
+  <circle cx="280" cy="70" r="8" fill="#ffffff" opacity="0.4"/>
+  
+  <!-- Profile Section -->
+  <circle cx="60" cy="50" r="25" fill="#ffffff" stroke="#ffffff" stroke-width="3"/>
+  <circle cx="60" cy="50" r="20" fill="#f8f9fa"/>
+  
+  <!-- Name with Creative Font Style -->
+  <rect x="100" y="30" width="120" height="18" fill="#ffffff" rx="4"/>
+  
+  <!-- Creative Title -->
+  <rect x="100" y="55" width="90" height="12" fill="#ffffff" opacity="0.9" rx="6"/>
+  
+  <!-- Main Content with Creative Layout -->
+  <rect x="20" y="120" width="260" height="260" fill="#ffffff" rx="15" stroke="#e5e7eb" stroke-width="1"/>
+  
+  <!-- Creative Section Headers -->
+  <rect x="30" y="140" width="80" height="25" fill="#ff6b6b" rx="12"/>
+  <rect x="30" y="147" width="66" height="11" fill="#ffffff" rx="2"/>
+  
+  <!-- Portfolio/Work Section -->
+  <rect x="40" y="180" width="100" height="60" fill="#f8f9fa" rx="8" stroke="#4ecdc4" stroke-width="2"/>
+  <rect x="50" y="190" width="80" height="8" fill="#374151" rx="2"/>
+  <rect x="50" y="205" width="60" height="6" fill="#6b7280" rx="1"/>
+  <rect x="50" y="220" width="70" height="4" fill="#9ca3af" rx="1"/>
+  
+  <rect x="160" y="180" width="100" height="60" fill="#f8f9fa" rx="8" stroke="#45b7d1" stroke-width="2"/>
+  <rect x="170" y="190" width="80" height="8" fill="#374151" rx="2"/>
+  <rect x="170" y="205" width="65" height="6" fill="#6b7280" rx="1"/>
+  <rect x="170" y="220" width="75" height="4" fill="#9ca3af" rx="1"/>
+  
+  <!-- Skills with Creative Design -->
+  <rect x="30" y="260" width="60" height="25" fill="#4ecdc4" rx="12"/>
+  <rect x="30" y="267" width="46" height="11" fill="#ffffff" rx="2"/>
+  
+  <!-- Creative Skill Bubbles -->
+  <circle cx="60" cy="310" r="15" fill="#ff6b6b" opacity="0.8"/>
+  <circle cx="100" cy="305" r="12" fill="#4ecdc4" opacity="0.8"/>
+  <circle cx="140" cy="315" r="10" fill="#45b7d1" opacity="0.8"/>
+  <circle cx="180" cy="308" r="14" fill="#ffd93d" opacity="0.8"/>
+  <circle cx="220" cy="312" r="11" fill="#6bcf7f" opacity="0.8"/>
+  
+  <!-- Contact Section -->
+  <rect x="30" y="340" width="70" height="25" fill="#45b7d1" rx="12"/>
+  <rect x="30" y="347" width="56" height="11" fill="#ffffff" rx="2"/>
+  
+  <!-- Contact Info with Icons -->
+  <circle cx="130" cy="355" r="4" fill="#ff6b6b"/>
+  <rect x="140" y="352" width="80" height="6" fill="#6b7280" rx="1"/>
+  
+  <!-- Creative Decorative Elements -->
+  <polygon points="270,130 285,145 270,160 255,145" fill="#ffd93d" opacity="0.6"/>
+  <circle cx="280" cy="200" r="6" fill="#6bcf7f" opacity="0.7"/>
+  <rect x="275" y="250" width="15" height="15" fill="#ff6b6b" opacity="0.5" rx="3" transform="rotate(45 282.5 257.5)"/>
+</svg>

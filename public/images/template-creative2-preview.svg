@@ -1,0 +1,53 @@
+<svg width="300" height="400" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="300" height="400" fill="#ffffff"/>
+  
+  <!-- Creative Header with Geometric Shapes -->
+  <rect x="0" y="0" width="300" height="100" fill="#f8fafc"/>
+  
+  <!-- Geometric Design Elements -->
+  <circle cx="50" cy="50" r="25" fill="#8b5cf6" opacity="0.8"/>
+  <rect x="100" y="25" width="50" height="50" fill="#06b6d4" opacity="0.6" transform="rotate(45 125 50)"/>
+  <polygon points="200,25 225,50 200,75 175,50" fill="#f59e0b" opacity="0.7"/>
+  <circle cx="250" cy="50" r="20" fill="#ef4444" opacity="0.5"/>
+  
+  <!-- Name Area -->
+  <rect x="20" y="120" width="180" height="20" fill="#1f2937" rx="3"/>
+  <rect x="20" y="145" width="120" height="12" fill="#6b7280" rx="2"/>
+  
+  <!-- Creative Portfolio Section -->
+  <rect x="20" y="180" width="260" height="180" fill="#ffffff" stroke="#e5e7eb" stroke-width="1" rx="8"/>
+  
+  <!-- Portfolio Grid -->
+  <rect x="30" y="190" width="70" height="50" fill="#8b5cf6" opacity="0.3" rx="4"/>
+  <rect x="110" y="190" width="70" height="50" fill="#06b6d4" opacity="0.3" rx="4"/>
+  <rect x="190" y="190" width="80" height="50" fill="#f59e0b" opacity="0.3" rx="4"/>
+  
+  <rect x="30" y="250" width="70" height="50" fill="#ef4444" opacity="0.3" rx="4"/>
+  <rect x="110" y="250" width="70" height="50" fill="#10b981" opacity="0.3" rx="4"/>
+  <rect x="190" y="250" width="80" height="50" fill="#8b5cf6" opacity="0.3" rx="4"/>
+  
+  <rect x="30" y="310" width="70" height="40" fill="#06b6d4" opacity="0.3" rx="4"/>
+  <rect x="110" y="310" width="160" height="40" fill="#f59e0b" opacity="0.3" rx="4"/>
+  
+  <!-- Creative Skills Sidebar -->
+  <rect x="20" y="380" width="260" height="15" fill="#f3f4f6" rx="8"/>
+  
+  <!-- Skill Bars with Creative Colors -->
+  <rect x="30" y="385" width="60" height="5" fill="#8b5cf6" rx="3"/>
+  <rect x="100" y="385" width="45" height="5" fill="#06b6d4" rx="3"/>
+  <rect x="155" y="385" width="50" height="5" fill="#f59e0b" rx="3"/>
+  <rect x="215" y="385" width="40" height="5" fill="#ef4444" rx="3"/>
+  
+  <!-- Decorative Elements -->
+  <circle cx="280" cy="120" r="8" fill="#8b5cf6" opacity="0.4"/>
+  <rect x="270" y="140" width="15" height="15" fill="#06b6d4" opacity="0.4" transform="rotate(45 277.5 147.5)"/>
+  <polygon points="275,170 285,175 275,180 265,175" fill="#f59e0b" opacity="0.4"/>
+  
+  <!-- Creative Border Accents -->
+  <rect x="0" y="0" width="300" height="3" fill="linear-gradient(90deg, #8b5cf6, #06b6d4, #f59e0b, #ef4444)"/>
+  <rect x="0" y="397" width="300" height="3" fill="linear-gradient(90deg, #ef4444, #f59e0b, #06b6d4, #8b5cf6)"/>
+  
+  <!-- Side Accent -->
+  <rect x="0" y="0" width="3" height="400" fill="linear-gradient(180deg, #8b5cf6, #06b6d4, #f59e0b, #ef4444)"/>
+</svg>

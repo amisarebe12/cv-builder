@@ -72,7 +72,7 @@ export class CVFactory {
       name: 'Minimal',
       description: 'Thiết kế tối giản, chuyên nghiệp',
       category: 'Professional',
-      preview: '/images/template-minimal-preview.jpg',
+      preview: '/images/template-minimal-preview.svg',
       component: TemplateMinimal,
       instance: minimalTemplateInstance
     });
@@ -83,7 +83,7 @@ export class CVFactory {
       name: 'Modern',
       description: 'Thiết kế hiện đại, bắt mắt',
       category: 'Creative',
-      preview: '/images/template-modern-preview.jpg',
+      preview: '/images/template-modern-preview.svg',
       component: TemplateModern,
       instance: modernTemplateInstance
     });
@@ -94,7 +94,7 @@ export class CVFactory {
       name: 'Creative',
       description: 'Mẫu CV sáng tạo với thiết kế độc đáo và màu sắc nổi bật',
       category: 'Creative',
-      preview: '/images/template-creative-preview.jpg',
+      preview: '/images/template-creative-preview.svg',
       component: TemplateCreative,
       instance: creativeTemplateInstance
     });
@@ -105,7 +105,7 @@ export class CVFactory {
       name: 'Classic',
       description: 'Thiết kế cổ điển, thanh lịch',
       category: 'Traditional',
-      preview: '/images/template-classic-preview.jpg',
+      preview: '/images/template-classic-preview.svg',
       component: TemplateClassic,
       instance: classicTemplateInstance
     });
@@ -116,7 +116,7 @@ export class CVFactory {
       name: 'Tech',
       description: 'Thiết kế chuyên nghiệp dành cho ngành IT và công nghệ',
       category: 'IT',
-      preview: '/images/template-tech-preview.jpg',
+      preview: '/images/template-tech-preview.svg',
       component: TemplateTech,
       instance: techTemplateInstance
     });
@@ -127,7 +127,7 @@ export class CVFactory {
       name: 'Business',
       description: 'Thiết kế chuyên nghiệp dành cho ngành kinh doanh',
       category: 'Business',
-      preview: '/images/template-business-preview.jpg',
+      preview: '/images/template-business-preview.svg',
       component: TemplateBusiness,
       instance: businessTemplateInstance
     });
@@ -138,7 +138,7 @@ export class CVFactory {
       name: 'Medical',
       description: 'Thiết kế chuyên nghiệp dành cho ngành y tế và chăm sóc sức khỏe',
       category: 'Healthcare',
-      preview: '/images/template-medical-preview.jpg',
+      preview: '/images/template-medical-preview.svg',
       component: TemplateMedical,
       instance: medicalTemplateInstance
     });
@@ -149,7 +149,7 @@ export class CVFactory {
       name: 'Education',
       description: 'Thiết kế chuyên nghiệp dành cho ngành giáo dục',
       category: 'Education',
-      preview: '/images/template-education-preview.jpg',
+      preview: '/images/template-education-preview.svg',
       component: TemplateEducation,
       instance: educationTemplateInstance
     });
@@ -160,7 +160,7 @@ export class CVFactory {
       name: 'Creative Plus',
       description: 'Thiết kế sáng tạo dành cho ngành thiết kế và nghệ thuật',
       category: 'Creative',
-      preview: '/images/template-creative2-preview.jpg',
+      preview: '/images/template-creative2-preview.svg',
       component: TemplateCreative2,
       instance: creative2TemplateInstance
     });
@@ -171,7 +171,7 @@ export class CVFactory {
       name: 'Legal',
       description: 'Thiết kế chuyên nghiệp dành cho ngành luật',
       category: 'Legal',
-      preview: '/images/template-legal-preview.jpg',
+      preview: '/images/template-legal-preview.svg',
       component: TemplateLegal,
       instance: legalTemplateInstance
     });
@@ -182,7 +182,7 @@ export class CVFactory {
       name: 'Finance',
       description: 'Thiết kế chuyên nghiệp dành cho ngành tài chính và ngân hàng',
       category: 'Finance',
-      preview: '/images/template-finance-preview.jpg',
+      preview: '/images/template-finance-preview.svg',
       component: TemplateFinance,
       instance: financeTemplateInstance
     });
@@ -193,7 +193,7 @@ export class CVFactory {
       name: 'Construction',
       description: 'Thiết kế chuyên nghiệp dành cho ngành xây dựng và kiến trúc',
       category: 'Construction',
-      preview: '/images/template-construction-preview.jpg',
+      preview: '/images/template-construction-preview.svg',
       component: TemplateConstruction,
       instance: constructionTemplateInstance
     });
@@ -204,7 +204,7 @@ export class CVFactory {
       name: 'Marketing',
       description: 'Thiết kế hiện đại và sáng tạo dành cho ngành marketing và truyền thông',
       category: 'Marketing',
-      preview: '/images/template-marketing-preview.jpg',
+      preview: '/images/template-marketing-preview.svg',
       component: TemplateMarketing,
       instance: marketingTemplateInstance
     });
@@ -215,7 +215,7 @@ export class CVFactory {
       name: 'Hospitality',
       description: 'Thiết kế chuyên nghiệp dành cho ngành khách sạn và du lịch',
       category: 'Hospitality',
-      preview: '/images/template-hospitality-preview.jpg',
+      preview: '/images/template-hospitality-preview.svg',
       component: TemplateHospitality,
       instance: hospitalityTemplateInstance
     });
@@ -226,7 +226,7 @@ export class CVFactory {
       name: 'Retail',
       description: 'Thiết kế chuyên nghiệp dành cho ngành bán lẻ và thương mại',
       category: 'Retail',
-      preview: '/images/template-retail-preview.jpg',
+      preview: '/images/template-retail-preview.svg',
       component: TemplateRetail,
       instance: retailTemplateInstance
     });
@@ -237,7 +237,7 @@ export class CVFactory {
       name: 'Agriculture',
       description: 'Thiết kế chuyên nghiệp dành cho ngành nông nghiệp và môi trường',
       category: 'Agriculture',
-      preview: '/images/template-agriculture-preview.jpg',
+      preview: '/images/template-agriculture-preview.svg',
       component: TemplateAgriculture,
       instance: agricultureTemplateInstance
     });

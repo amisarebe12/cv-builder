@@ -8,13 +8,10 @@ import {
   BookOutlined,
   ToolOutlined,
   ProjectOutlined,
-  GlobalOutlined,
-  CertificateOutlined,
   PlusOutlined,
   DeleteOutlined,
   UploadOutlined,
-  SaveOutlined,
-  EyeOutlined
+  SaveOutlined
 } from '@ant-design/icons';
 import { CVData } from '../models/CVModel';
 
@@ -22,10 +19,11 @@ const { TextArea } = Input;
 const { Option } = Select;
 
 interface MobileCVEditorProps {
-  cvData: CVData;
-  onSave: (data: CVData, title: string) => void;
-  onPreview: () => void;
-  loading?: boolean;
+  cvId?: string;
+  templateId?: string;
+  initialData?: any;
+  onSave: (data: any) => Promise<void>;
+  onCancel: () => void;
 }
 
 interface TabConfig {
@@ -36,14 +34,16 @@ interface TabConfig {
 }
 
 const MobileCVEditor: React.FC<MobileCVEditorProps> = ({
-  cvData,
+  cvId,
+  templateId,
+  initialData,
   onSave,
-  onPreview,
-  loading = false
+  onCancel
 }) => {
   const [form] = Form.useForm();
   const [activeTab, setActiveTab] = useState('personal');
-  const [formData, setFormData] = useState<CVData>(cvData);
+  const [formData, setFormData] = useState(initialData || {});
+  const [loading, setLoading] = useState(false);
 
   const tabs: TabConfig[] = [
     {
@@ -78,13 +78,18 @@ const MobileCVEditor: React.FC<MobileCVEditorProps> = ({
     }
   ];
 
-  const handleSave = () => {
-    form.validateFields().then(values => {
+  const handleSave = async () => {
+    try {
+      setLoading(true);
+      const values = await form.validateFields();
       const updatedData = { ...formData, ...values };
-      onSave(updatedData, values.personalInfo?.fullName || 'CV không có tiêu đề');
-    }).catch(error => {
+      await onSave(updatedData);
+      message.success('Lưu CV thành công!');
+    } catch (error) {
       message.error('Vui lòng kiểm tra lại thông tin');
-    });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const renderPersonalInfo = () => (
@@ -270,11 +275,10 @@ const MobileCVEditor: React.FC<MobileCVEditorProps> = ({
           <Space direction="vertical" className="w-full" size="middle">
             <Button
               type="default"
-              icon={<EyeOutlined />}
               className="w-full mobile-button"
-              onClick={onPreview}
+              onClick={onCancel}
             >
-              Xem trước
+              Hủy
             </Button>
             <Button
               type="primary"

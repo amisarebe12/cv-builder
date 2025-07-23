@@ -64,7 +64,9 @@ export async function POST(request: NextRequest) {
     })
     
     // Create magic link
-    const baseUrl = process.env.NEXTAUTH_URL || 'https://www.cleanspark.site'
+    const protocol = request.headers.get('x-forwarded-proto') || 'https'
+    const host = request.headers.get('host') || 'www.cleanspark.site'
+    const baseUrl = `${protocol}://${host}`
     const magicLink = `${baseUrl}/auth/verify-email?token=${verificationToken}&email=${encodeURIComponent(email)}`
     
     // Send verification email

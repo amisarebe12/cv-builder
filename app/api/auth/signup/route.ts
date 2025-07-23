@@ -97,7 +97,12 @@ export async function POST(request: NextRequest) {
 
     // Send verification email
     try {
-      const verificationResponse = await fetch(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/auth/send-verification`, {
+      // Get the base URL from the request headers
+      const protocol = request.headers.get('x-forwarded-proto') || 'http';
+      const host = request.headers.get('host') || 'localhost:3000';
+      const baseUrl = `${protocol}://${host}`;
+      
+      const verificationResponse = await fetch(`${baseUrl}/api/auth/send-verification`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

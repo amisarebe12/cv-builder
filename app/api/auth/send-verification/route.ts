@@ -41,7 +41,9 @@ export async function POST(request: NextRequest) {
     const verificationExpires = new Date(Date.now() + 5 * 60 * 1000) // 5 minutes
 
     // Create magic link
-    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
+    const protocol = request.headers.get('x-forwarded-proto') || 'https'
+    const host = request.headers.get('host') || 'localhost:3000'
+    const baseUrl = `${protocol}://${host}`
     const magicLink = `${baseUrl}/auth/verify-email?token=${verificationToken}`
 
     // Update user with verification data

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Space, Typography, Progress, Tooltip } from 'antd';
 import { DeleteOutlined, InfoCircleOutlined, ReloadOutlined } from '@ant-design/icons';
-import { ImageCleanupService } from '../services/ImageCleanupService';
+import { ImageCleanupService, StoredImage } from '../services/ImageCleanupService';
 
 const { Text } = Typography;
 
@@ -12,7 +12,11 @@ interface ImageStorageInfoProps {
 }
 
 const ImageStorageInfo: React.FC<ImageStorageInfoProps> = ({ className }) => {
-  const [storageInfo, setStorageInfo] = useState({
+  const [storageInfo, setStorageInfo] = useState<{
+    count: number;
+    totalSize: number;
+    images: StoredImage[];
+  }>({
     count: 0,
     totalSize: 0,
     images: []

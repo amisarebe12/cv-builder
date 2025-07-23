@@ -13,6 +13,8 @@ import {
   FolderOutlined,
   LoginOutlined
 } from '@ant-design/icons';
+import useDeviceType from '../hooks/useDeviceType';
+import MobileNavigation from './MobileNavigation';
 
 const { Header: AntHeader } = Layout;
 const { Title } = Typography;
@@ -25,6 +27,12 @@ const Header: React.FC<HeaderProps> = ({ className = '' }) => {
   const router = useRouter();
   const { data: session, status } = useSession();
   const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
+  const { isMobile, isTablet } = useDeviceType();
+  
+  // Don't render header on mobile, use MobileNavigation instead
+  if (isMobile) {
+    return <MobileNavigation />;
+  }
 
   const menuItems = [
     {

@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Layout, message, Spin, Modal } from 'antd';
 import { useSession } from 'next-auth/react';
 import CVEditor from '../../components/CVEditor';
+import MobileCVEditor from '../../components/MobileCVEditor';
+import useDeviceType from '../../hooks/useDeviceType';
 import { CVModel } from '../../models/CVModel';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
@@ -15,6 +17,7 @@ const EditorPage: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { data: session, status } = useSession();
+  const { isMobile } = useDeviceType();
   const [loading, setLoading] = useState(false);
   const [cvData, setCvData] = useState<any>(null);
   
@@ -141,13 +144,23 @@ const EditorPage: React.FC = () => {
       <Header />
       <Content className="p-6">
         <div className="max-w-7xl mx-auto">
-          <CVEditor
-            cvId={cvId || undefined}
-            templateId={templateId}
-            initialData={cvData}
-            onSave={handleSave}
-            onCancel={handleCancel}
-          />
+          {isMobile ? (
+            <MobileCVEditor
+              cvId={cvId || undefined}
+              templateId={templateId}
+              initialData={cvData}
+              onSave={handleSave}
+              onCancel={handleCancel}
+            />
+          ) : (
+            <CVEditor
+              cvId={cvId || undefined}
+              templateId={templateId}
+              initialData={cvData}
+              onSave={handleSave}
+              onCancel={handleCancel}
+            />
+          )}
         </div>
       </Content>
       <Footer />

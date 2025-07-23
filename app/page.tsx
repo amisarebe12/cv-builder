@@ -7,10 +7,12 @@ import { EyeOutlined, RocketOutlined, StarOutlined, CheckCircleOutlined } from '
 import CVCard from '../components/CVCard';
 import PreviewModal from '../components/PreviewModal';
 import TemplateSelector from '../components/TemplateSelector';
+import MobileTemplateSelector from '../components/MobileTemplateSelector';
 import SelectedTemplateInfo from '../components/SelectedTemplateInfo';
 import StatsSection from '../components/StatsSection';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
+import useDeviceType from '../hooks/useDeviceType';
 import { CVModel } from '../models/CVModel';
 import { CVService } from '../services/CVService';
 import { getAllTemplates, TemplateInfo } from '../utils/CVFactory';
@@ -25,6 +27,7 @@ const HomePage: React.FC = () => {
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewTemplateId, setPreviewTemplateId] = useState<string>('');
   const [loading, setLoading] = useState(true);
+  const { isMobile, isTablet } = useDeviceType();
 
   useEffect(() => {
     initializeData();
@@ -200,28 +203,38 @@ const HomePage: React.FC = () => {
             </Paragraph>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Template Selector */}
-            <div className="lg:col-span-2">
-              <TemplateSelector
-                templates={templates}
-                selectedTemplateId={selectedTemplate}
-                onPreview={handlePreview}
-                onSelect={handleSelect}
-              />
-            </div>
-            
-            {/* Selected Template Info */}
-            <div className="lg:col-span-1">
-              <div className="sticky top-8">
-                <SelectedTemplateInfo
-                  template={templates.find(t => t.id === selectedTemplate) || null}
-                  onPreview={() => selectedTemplate && handlePreview(selectedTemplate)}
-                  onStartEditing={handleStartEditing}
+          {isMobile ? (
+            <MobileTemplateSelector
+              templates={templates}
+              selectedTemplateId={selectedTemplate}
+              onPreview={handlePreview}
+              onSelect={handleSelect}
+              onStartEditing={handleStartEditing}
+            />
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Template Selector */}
+              <div className="lg:col-span-2">
+                <TemplateSelector
+                  templates={templates}
+                  selectedTemplateId={selectedTemplate}
+                  onPreview={handlePreview}
+                  onSelect={handleSelect}
                 />
               </div>
+              
+              {/* Selected Template Info */}
+              <div className="lg:col-span-1">
+                <div className="sticky top-8">
+                  <SelectedTemplateInfo
+                    template={templates.find(t => t.id === selectedTemplate) || null}
+                    onPreview={() => selectedTemplate && handlePreview(selectedTemplate)}
+                    onStartEditing={handleStartEditing}
+                  />
+                </div>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </section>
 

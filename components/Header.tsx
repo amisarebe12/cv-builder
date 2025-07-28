@@ -31,7 +31,7 @@ const Header: React.FC<HeaderProps> = ({ className = '' }) => {
   
   // Don't render header on mobile portrait, use MobileNavigation instead
   // But show header on tablet and mobile landscape
-  if (isMobile && window.innerHeight > window.innerWidth) {
+  if (isMobile && typeof window !== 'undefined' && window.innerHeight > window.innerWidth) {
     return <MobileNavigation />;
   }
 

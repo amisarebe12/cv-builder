@@ -105,6 +105,7 @@ const MobileNavigation: React.FC<MobileNavigationProps> = ({ className = '' }) =
               } ${
                 item.primary ? 'text-blue-600' : ''
               }`}
+              style={{ touchAction: 'manipulation' }}
             >
               <div className={`mb-1 ${
                 item.primary ? 'p-2 bg-blue-100 rounded-full' : ''

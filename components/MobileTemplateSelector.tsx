@@ -104,8 +104,9 @@ const MobileTemplateSelector: React.FC<MobileTemplateSelectorProps> = ({
               <Button
                 type="text"
                 icon={<EyeOutlined />}
-                className="absolute top-2 left-2 w-8 h-8 bg-white/80 hover:bg-white border-0 rounded-full flex items-center justify-center"
+                className="absolute top-2 left-2 w-10 h-10 bg-white/80 hover:bg-white border-0 rounded-full flex items-center justify-center"
                 onClick={() => handlePreview(template)}
+                style={{ touchAction: 'manipulation', minHeight: '40px', minWidth: '40px' }}
               />
             </div>
             
@@ -129,6 +130,7 @@ const MobileTemplateSelector: React.FC<MobileTemplateSelectorProps> = ({
                 size="small"
                 className="w-full mobile-button"
                 onClick={() => onSelect(template.id)}
+                style={{ touchAction: 'manipulation', minHeight: '44px' }}
               >
                 {selectedTemplate === template.id ? 'Đã chọn' : 'Chọn mẫu'}
               </Button>

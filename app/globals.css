@@ -158,6 +158,32 @@ p {
 }
 
 /* Mobile-First Responsive Design */
+/* Global Mobile Touch Improvements */
+button, .ant-btn, [role="button"], .clickable {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+/* Prevent zoom on double tap for mobile */
+* {
+  touch-action: manipulation;
+}
+
+/* Improve scrolling on mobile */
+body {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* Improve touch targets for mobile */
+@media (max-width: 576px) {
+  button, .ant-btn, [role="button"], .clickable {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
 /* Mobile Styles (320px - 576px) */
 @media (max-width: 576px) {
   .cv-card {
@@ -186,6 +212,9 @@ p {
   .mobile-nav-item {
     @apply flex flex-col items-center justify-center py-2 px-1 text-xs;
     min-height: 60px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
   }
   
   .mobile-nav-item.active {
@@ -234,6 +263,9 @@ p {
   .mobile-button {
     @apply w-full py-3 px-4 text-base font-medium rounded-lg;
     min-height: 44px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
   }
   
   /* Mobile Template Grid */
@@ -243,6 +275,9 @@ p {
   
   .mobile-template-card {
     @apply relative bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
   }
   
   .mobile-template-preview {

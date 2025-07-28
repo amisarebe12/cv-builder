@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { Providers } from './providers';
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || (process.env.NODE_ENV === 'production' ? `https://www.${process.env.DOMAIN_NAME || 'cleanspark.site'}` : 'http://localhost:3000');
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || (process.env.NODE_ENV === 'production' ? `https://www.${process.env.DOMAIN_NAME || 'topcv.fun'}` : 'http://localhost:3000');
 
 const inter = Inter({ subsets: ['latin', 'vietnamese'] });
 

@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
     
     // Create magic link
     const protocol = request.headers.get('x-forwarded-proto') || 'https'
-    const host = request.headers.get('host') || `www.${process.env.DOMAIN_NAME || 'cleanspark.site'}`
+    const host = request.headers.get('host') || `www.${process.env.DOMAIN_NAME || 'topcv.fun'}`
     const baseUrl = `${protocol}://${host}`
     const magicLink = `${baseUrl}/auth/verify-email?token=${verificationToken}&email=${encodeURIComponent(email)}`
     

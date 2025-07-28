@@ -8,11 +8,11 @@ Trong file `.env.local` (hoặc `.env.production` trên server):
 
 ```env
 # Thay đổi domain name
-DOMAIN_NAME=your-new-domain.com
+DOMAIN_NAME=topcv.fun
 
 # Cập nhật các URL base nếu cần
-NEXTAUTH_URL=https://www.your-new-domain.com
-NEXT_PUBLIC_BASE_URL=https://www.your-new-domain.com
+NEXTAUTH_URL=https://www.topcv.fun
+NEXT_PUBLIC_BASE_URL=https://www.topcv.fun
 ```
 
 ## 2. Cập nhật cấu hình Vercel
@@ -27,10 +27,10 @@ Trong file `vercel.json`, cập nhật phần redirects:
       "has": [
         {
           "type": "host",
-          "value": "your-new-domain.com"  // Thay đổi ở đây
+          "value": "topcv.fun"  // Thay đổi ở đây
         }
       ],
-      "destination": "https://www.your-new-domain.com/$1",  // Và ở đây
+      "destination": "https://www.topcv.fun/$1",  // Và ở đây
       "permanent": true
     }
   ]

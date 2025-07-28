@@ -91,7 +91,7 @@ export const authOptions: NextAuthOptions = {
     },
     async redirect({ url, baseUrl }) {
       // Handle both www and non-www domains for mobile compatibility
-      const domainName = process.env.DOMAIN_NAME || 'cleanspark.site'
+      const domainName = process.env.DOMAIN_NAME || 'topcv.fun'
       const allowedDomains = [
         `https://${domainName}`,
         `https://www.${domainName}`

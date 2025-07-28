@@ -15,10 +15,10 @@
       "has": [
         {
           "type": "host",
-          "value": "cleanspark.site"
+          "value": "topcv.fun"
         }
       ],
-      "destination": "https://www.cleanspark.site/$1",
+      "destination": "https://www.topcv.fun/$1",
       "permanent": true
     }
   ]

@@ -113,7 +113,7 @@ const StatsSection: React.FC = () => {
             Thống kê ấn tượng
           </Title>
           <Paragraph className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Hàng nghìn người đã tin tưởng và sử dụng CV Builder để tạo ra những bản CV xuất sắc
+            Hàng nghìn người đã tin tưởng và sử dụng TopCV để tạo ra những bản CV xuất sắc
           </Paragraph>
         </div>
         
@@ -157,7 +157,7 @@ const StatsSection: React.FC = () => {
         <div className="mt-12 text-center">
           <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8">
             <Title level={3} className="text-2xl font-bold text-gray-900 mb-4">
-              🎉 Tham gia cộng đồng CV Builder ngay hôm nay!
+              🎉 Tham gia cộng đồng TopCV ngay hôm nay!
             </Title>
             <Paragraph className="text-lg text-gray-600 mb-0">
               Hơn <strong>{stats.totalUsers.toLocaleString()}</strong> người đã tạo CV thành công. 

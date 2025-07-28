@@ -36,7 +36,7 @@ const Footer: React.FC = () => {
             <Col xs={24} sm={12} lg={12}>
               <div className="mb-6">
                 <Title level={3} className="text-white mb-4">
-                  CV Builder
+                  TopCV
                 </Title>
                 <Paragraph className="text-gray-300 mb-4">
                   Tạo CV chuyên nghiệp chỉ trong vài phút. 
@@ -86,7 +86,7 @@ const Footer: React.FC = () => {
           <Row justify="space-between" align="middle">
             <Col xs={24} sm={12}>
               <Paragraph className="text-gray-400 mb-0">
-                © {currentYear} CV Builder. Tất cả quyền được bảo lưu.
+                © {currentYear} TopCV. Tất cả quyền được bảo lưu.
               </Paragraph>
             </Col>
             <Col xs={24} sm={12} className="text-right">

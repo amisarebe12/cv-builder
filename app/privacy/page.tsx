@@ -77,7 +77,7 @@ const PrivacyPage: React.FC = () => {
               </div>
 
               <Paragraph className="text-gray-600 leading-relaxed">
-                Khi bạn sử dụng CV Builder, chúng tôi có thể thu thập các loại thông tin sau:
+                Khi bạn sử dụng TopCV, chúng tôi có thể thu thập các loại thông tin sau:
               </Paragraph>
               
               <div className="grid md:grid-cols-2 gap-6 mt-6">
@@ -123,7 +123,7 @@ const PrivacyPage: React.FC = () => {
               </Paragraph>
               <div className="bg-gradient-to-r from-green-50 to-blue-50 p-6 rounded-lg">
                 <ul className="grid md:grid-cols-2 gap-3 text-gray-700">
-                  <li className="flex items-center gap-2">✅ Cung cấp và duy trì dịch vụ CV Builder</li>
+                  <li className="flex items-center gap-2">✅ Cung cấp và duy trì dịch vụ TopCV</li>
                   <li className="flex items-center gap-2">✅ Tạo và lưu trữ CV của bạn</li>
                   <li className="flex items-center gap-2">✅ Cải thiện chất lượng dịch vụ</li>
                   <li className="flex items-center gap-2">✅ Gửi thông báo về cập nhật dịch vụ</li>
@@ -336,7 +336,7 @@ const PrivacyPage: React.FC = () => {
                   <div className="bg-white p-4 rounded-lg border border-indigo-100 shadow-sm">
                     <div className="text-indigo-600 text-xl mb-2">🛠️</div>
                     <div className="font-medium text-indigo-700 mb-1">Cung cấp dịch vụ</div>
-                    <div className="text-sm text-gray-600">Duy trì và vận hành CV Builder</div>
+                    <div className="text-sm text-gray-600">Duy trì và vận hành TopCV</div>
                   </div>
                   <div className="bg-white p-4 rounded-lg border border-blue-100 shadow-sm">
                     <div className="text-blue-600 text-xl mb-2">⚖️</div>
@@ -483,7 +483,7 @@ const PrivacyPage: React.FC = () => {
                           <span className="font-medium text-gray-700">Đội ngũ hỗ trợ</span>
                         </div>
                         <div className="text-green-600 bg-green-50 px-3 py-2 rounded border">
-                          CV Builder Support Team
+                          TopCV Support Team
                         </div>
                       </div>
                     </div>

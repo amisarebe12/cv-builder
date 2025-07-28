@@ -36,7 +36,7 @@ export const generateSecureToken = (): string => {
 // Email templates
 export const getVerificationEmailTemplate = (code: string, magicLink: string, userName: string) => {
   return {
-    subject: 'Xác thực email của bạn - CV Builder',
+    subject: 'Xác thực email của bạn - TopCV',
     html: `
       <!DOCTYPE html>
       <html>
@@ -59,13 +59,13 @@ export const getVerificationEmailTemplate = (code: string, magicLink: string, us
       <body>
         <div class="container">
           <div class="header">
-            <h1>🎯 CV Builder</h1>
+            <h1>🎯 TopCV</h1>
             <p>Xác thực email của bạn</p>
           </div>
           
           <div class="content">
             <h2>Xin chào ${userName}!</h2>
-            <p>Cảm ơn bạn đã đăng ký tài khoản CV Builder. Để hoàn tất quá trình đăng ký, vui lòng xác thực email của bạn.</p>
+            <p>Cảm ơn bạn đã đăng ký tài khoản TopCV. Để hoàn tất quá trình đăng ký, vui lòng xác thực email của bạn.</p>
             
             <div class="code-box">
               <p><strong>Mã xác thực của bạn:</strong></p>
@@ -89,7 +89,7 @@ export const getVerificationEmailTemplate = (code: string, magicLink: string, us
           </div>
           
           <div class="footer">
-            <p>Email này được gửi từ CV Builder</p>
+            <p>Email này được gửi từ TopCV</p>
             <p>Nếu bạn gặp vấn đề, vui lòng liên hệ hỗ trợ</p>
           </div>
         </div>
@@ -99,7 +99,7 @@ export const getVerificationEmailTemplate = (code: string, magicLink: string, us
     text: `
       Xin chào ${userName}!
       
-      Cảm ơn bạn đã đăng ký tài khoản CV Builder.
+      Cảm ơn bạn đã đăng ký tài khoản TopCV.
       
       Mã xác thực của bạn: ${code}
       Mã này có hiệu lực trong 5 phút.
@@ -109,7 +109,7 @@ export const getVerificationEmailTemplate = (code: string, magicLink: string, us
       Nếu bạn không yêu cầu xác thực này, vui lòng bỏ qua email.
       
       Trân trọng,
-      CV Builder Team
+      TopCV Team
     `
   }
 }

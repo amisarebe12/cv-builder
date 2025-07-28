@@ -8,14 +8,14 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || (process.env.NODE_ENV === 'p
 const inter = Inter({ subsets: ['latin', 'vietnamese'] });
 
 export const metadata: Metadata = {
-  title: 'CV Builder - Tạo CV Online Chuyên Nghiệp',
+  title: 'TopCV - Tạo CV Online Chuyên Nghiệp',
   description: 'Tạo CV online đẹp, chuyên nghiệp với nhiều mẫu thiết kế hiện đại. Dễ dàng tùy chỉnh và tải xuống CV của bạn.',
-  keywords: 'CV online, tạo CV, resume builder, CV builder, việc làm, tuyển dụng',
-  authors: [{ name: 'CV Builder Team' }],
+  keywords: 'CV online, tạo CV, resume builder, TopCV, việc làm, tuyển dụng',
+  authors: [{ name: 'TopCV Team' }],
   robots: 'index, follow',
   metadataBase: new URL(baseUrl),
   openGraph: {
-    title: 'CV Builder - Tạo CV Online Chuyên Nghiệp',
+    title: 'TopCV - Tạo CV Online Chuyên Nghiệp',
     description: 'Tạo CV online đẹp, chuyên nghiệp với nhiều mẫu thiết kế hiện đại.',
     type: 'website',
     locale: 'vi_VN',

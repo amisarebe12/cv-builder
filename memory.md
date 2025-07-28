@@ -1,4 +1,4 @@
-# CV Builder Project - Memory Documentation
+# TopCV Project - Memory Documentation
 
 ## 📋 Yêu cầu ban đầu
 
@@ -277,7 +277,7 @@ mycv/
   - Component Header được import và sử dụng
   - Cho phép người dùng dễ dàng quay về trang chủ
   - Menu responsive với mobile drawer
-  - Logo CV Builder và navigation links
+  - Logo TopCV và navigation links
 
 ### Layout Structure
 - Tất cả static pages sử dụng cấu trúc:
@@ -452,4 +452,4 @@ mycv/
 
 **Last Updated**: December 2024
 **Version**: 1.1.1
-**Maintainer**: CV Builder Team
+**Maintainer**: TopCV Team

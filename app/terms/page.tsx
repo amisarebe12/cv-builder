@@ -55,7 +55,7 @@ const TermsPage: React.FC = () => {
             {/* Alert Section */}
             <Alert
               message="Thông báo quan trọng"
-              description="Vui lòng đọc kỹ các điều khoản sử dụng này trước khi sử dụng dịch vụ CV Builder. Việc sử dụng dịch vụ đồng nghĩa với việc bạn đồng ý với tất cả các điều khoản được nêu ra."
+              description="Vui lòng đọc kỹ các điều khoản sử dụng này trước khi sử dụng dịch vụ TopCV. Việc sử dụng dịch vụ đồng nghĩa với việc bạn đồng ý với tất cả các điều khoản được nêu ra."
               type="warning"
               showIcon
               className="mb-6"
@@ -73,7 +73,7 @@ const TermsPage: React.FC = () => {
                   <div className="text-green-600 text-3xl">✅</div>
                   <div className="flex-1">
                     <Paragraph className="text-gray-700 font-medium mb-4">
-                      Bằng việc truy cập và sử dụng website CV Builder, bạn đồng ý tuân thủ và bị ràng buộc bởi các điều khoản và điều kiện sử dụng này.
+                      Bằng việc truy cập và sử dụng website TopCV, bạn đồng ý tuân thủ và bị ràng buộc bởi các điều khoản và điều kiện sử dụng này.
                     </Paragraph>
                     <div className="bg-red-100 border border-red-300 p-4 rounded-lg">
                       <Paragraph className="mb-0 text-red-800">
@@ -94,7 +94,7 @@ const TermsPage: React.FC = () => {
               </div>
               <div className="bg-blue-50 border border-blue-200 p-6 rounded-lg">
                 <Paragraph className="text-gray-700 font-medium mb-6">
-                  🛠️ CV Builder là một công cụ trực tuyến miễn phí giúp người dùng tạo ra các bản CV chuyên nghiệp.
+                  🛠️ TopCV là một công cụ trực tuyến miễn phí giúp người dùng tạo ra các bản CV chuyên nghiệp.
                 </Paragraph>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="bg-white p-4 rounded-lg border border-blue-200 shadow-sm">
@@ -174,7 +174,7 @@ const TermsPage: React.FC = () => {
               </div>
               <div className="bg-orange-50 border border-orange-200 p-6 rounded-lg">
                 <Paragraph className="text-gray-700 font-medium mb-4">
-                  ©️ Tất cả nội dung trên website, bao gồm thiết kế, mẫu CV, logo, văn bản, hình ảnh, và phần mềm, đều thuộc quyền sở hữu của CV Builder hoặc các bên cấp phép.
+                  ©️ Tất cả nội dung trên website, bao gồm thiết kế, mẫu CV, logo, văn bản, hình ảnh, và phần mềm, đều thuộc quyền sở hữu của TopCV hoặc các bên cấp phép.
                 </Paragraph>
                 <div className="bg-red-100 border border-red-300 p-4 rounded-lg mb-4">
                   <Paragraph className="mb-2 text-red-800 font-medium">
@@ -264,7 +264,7 @@ const TermsPage: React.FC = () => {
               </div>
               <div className="bg-yellow-50 border border-yellow-200 p-6 rounded-lg">
                 <Paragraph className="text-gray-700 font-medium mb-4">
-                  ⚠️ CV Builder cung cấp dịch vụ "như hiện tại" và không đảm bảo rằng dịch vụ sẽ luôn hoạt động mà không có lỗi hoặc gián đoạn.
+                  ⚠️ TopCV cung cấp dịch vụ "như hiện tại" và không đảm bảo rằng dịch vụ sẽ luôn hoạt động mà không có lỗi hoặc gián đoạn.
                 </Paragraph>
                 <div className="bg-yellow-100 border border-yellow-300 p-4 rounded-lg mb-4">
                   <Paragraph className="mb-2 text-yellow-800 font-medium">

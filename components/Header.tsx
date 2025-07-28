@@ -98,7 +98,7 @@ const Header: React.FC<HeaderProps> = ({ className = '' }) => {
               <FileTextOutlined className="text-white text-lg" />
             </div>
             <Title level={4} className="mb-0 text-gray-900">
-              CV Builder
+              TopCV
             </Title>
           </div>
 
@@ -190,7 +190,7 @@ const Header: React.FC<HeaderProps> = ({ className = '' }) => {
             <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded flex items-center justify-center">
               <FileTextOutlined className="text-white text-sm" />
             </div>
-            <span>CV Builder</span>
+            <span>TopCV</span>
           </div>
         }
         placement="right"
@@ -290,7 +290,7 @@ const Header: React.FC<HeaderProps> = ({ className = '' }) => {
           {/* Mobile Footer */}
           <div className="border-t pt-4 mt-4 text-center">
             <p className="text-gray-500 text-sm mb-1">
-              © 2024 CV Builder
+              © 2024 TopCV
             </p>
             <p className="text-gray-400 text-xs mb-0">
               Tạo CV chuyên nghiệp miễn phí

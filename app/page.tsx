@@ -135,7 +135,7 @@ const HomePage: React.FC = () => {
               <br />Chuyên Nghiệp
             </Title>
             <Paragraph className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Với CV Builder, bạn có thể tạo ra những bản CV ấn tượng chỉ trong vài phút. 
+              Với TopCV, bạn có thể tạo ra những bản CV ấn tượng chỉ trong vài phút. 
               Chọn từ nhiều mẫu thiết kế đẹp mắt và tùy chỉnh theo phong cách riêng của bạn.
             </Paragraph>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
@@ -168,7 +168,7 @@ const HomePage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <Title level={2} className="text-3xl font-bold text-gray-900 mb-4">
-              Tại sao chọn CV Builder?
+              Tại sao chọn TopCV?
             </Title>
             <Paragraph className="text-lg text-gray-600 max-w-2xl mx-auto">
               Chúng tôi cung cấp những công cụ tốt nhất để bạn tạo ra CV hoàn hảo
